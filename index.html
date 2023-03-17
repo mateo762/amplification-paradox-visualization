@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - D3 in Depth</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="radio-container">
+      <label><input type="radio" name="radioButton" id="far_left" class="radio-margin" checked>Far Left</label>
+      <label><input type="radio" name="radioButton" id="left" class="radio-margin">Left</label>
+      <label><input type="radio" name="radioButton" id="center" class="radio-margin">Center</label>
+      <label><input type="radio" name="radioButton" id="right" class="radio-margin">Right</label>
+      <label><input type="radio" name="radioButton" id="far_right">Far Right</label>
+    </div>
+    <div class="margin-top">
+      <svg id="animation" width="690" height="230"></svg>
+    </div>
+    <div class="margin-top">
+      <svg id="bar"></svg>
+    </div>
+    <button class="start-button">Start animation</button>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js'></script>
+  <script src="./script.js"></script>
+  <script src="./bar.js"></script>
+</body>
+
+</html>

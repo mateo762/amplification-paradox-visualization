@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      font-family: "Helvetica Neue", Helvetica, sans-serif;
+      font-size: 12px;
+      color: #333;
+    }
+
+    .bar {
+      fill: steelblue;
+    }
+  </style>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+
+<body>
+  <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; height: 50vh;">
+    <div style="display: flex; justify-content: center; align-items: center;">
+      <label><input type="radio" name="radioButton" id="far_left" style="margin-right: 10px;" checked>Far Left</label>
+      <label><input type="radio" name="radioButton" id="left" style="margin-right: 10px;">Left</label>
+      <label><input type="radio" name="radioButton" id="center" style="margin-right: 10px;">Center</label>
+      <label><input type="radio" name="radioButton" id="right" style="margin-right: 10px;">Right</label>
+      <label><input type="radio" name="radioButton" id="far_right">Far Right</label>
+    </div>
+    <svg id="bar"></svg>
+    <button style="margin-top: 20px;">Start animation</button>
+  </div>
+</body>
+<script src="bar.js"></script>
+
+</html>

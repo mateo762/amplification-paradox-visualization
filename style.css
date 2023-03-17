@@ -1,0 +1,116 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 12px;
+  color: #333;
+}
+
+g{
+  margin: auto;
+}
+
+.circle-1 {
+  fill:#1919e6
+}
+
+.circle-2{
+  fill: #6060b1
+}
+
+.circle-3{
+  fill: #808080
+}
+
+.circle-4{
+  fill: #b34d4d
+}
+
+.circle-5{
+  fill: #e61919
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.radio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radio-margin {
+  margin-right: 10px;
+}
+
+.margin-top {
+  margin-top: 5vh;
+}
+
+.start-button {
+  margin-top: 20px;
+}
+
+/* Radio button container and labels */
+.radio-container label {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 6px 12px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  color: #495057;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.radio-container label:hover {
+  background-color: #e9ecef;
+  border-color: #ced4da;
+}
+
+.radio-container input[type="radio"]:checked + label{
+  background-color: #007bff;
+  border-color: #007bff;
+  color: red;
+}
+
+
+/* Start animation button */
+.start-button {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 8px 16px;
+  background-color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.start-button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+/* Additional styles for the axes */
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #333;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 12px;
+  fill: #333;
+}
+
+.tick line {
+  opacity: 0.2;
+}
