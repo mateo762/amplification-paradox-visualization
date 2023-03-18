@@ -1,32 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>CodePen - D3 in Depth</title>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div class="container">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>CodePen - D3 in Depth</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="radio-wrapper">
       <div class="radio-container">
-        <label><input type="radio" name="radioButton" id="far_left" class="radio-margin" checked />Far Left</label>
-        <label><input type="radio" name="radioButton" id="left" class="radio-margin" />Left</label>
-        <label><input type="radio" name="radioButton" id="center" class="radio-margin" />Center</label>
-        <label><input type="radio" name="radioButton" id="right" class="radio-margin" />Right</label>
-        <label><input type="radio" name="radioButton" id="far_right" />Far Right</label>
+        <input type="radio" name="radio-topic" id="far_left" class="radio-margin" checked />
+        <label for="far_left">Far Left</label>
+        <input type="radio" name="radio-topic" id="left" class="radio-margin" />
+        <label for="left">Left</label>
+        <input type="radio" name="radio-topic" id="center" class="radio-margin" />
+        <label for="center">Center</label>
+        <input type="radio" name="radio-topic" id="right" class="radio-margin" />
+        <label for="right">Right</label>
+        <input type="radio" name="radio-topic" id="far_right" />
+        <label for="far_right">Far Right</label>
       </div>
-      <div class="margin-top">
-        <svg id="animation" width="690" height="230"></svg>
-      </div>
-      <div class="margin-top">
-        <svg id="bar"></svg>
-      </div>
-      <div class="button-container">
-        <button class="start-button">Start animation</button>
-        <button class="stop-button">Stop</button>
+      <div class="radio-container">
+        <input type="radio" name="radio-speed" id="slow" class="radio-margin" />
+        <label for="slow">Slow</label>
+        <input type="radio" name="radio-speed" id="medium" class="radio-margin" />
+        <label for="medium">Medium</label>
+        <input type="radio" name="radio-speed" id="fast" checked />
+        <label for="fast">Fast</label>
       </div>
     </div>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js'></script>
-    <script src="./script.js"></script>
-    <script src="./bar.js"></script>
-  </body>
+    <div class="margin-top">
+      <svg id="animation" width="690" height="230"></svg>
+    </div>
+    <div class="margin-top">
+      <svg id="bar"></svg>
+    </div>
+    <div class="button-container">
+      <button class="start-button">Start animation</button>
+      <button class="stop-button">Stop</button>
+    </div>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js'></script>
+  <script src="./script.js"></script>
+  <script src="./bar.js"></script>
+</body>
+
 </html>

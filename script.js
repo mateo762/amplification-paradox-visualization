@@ -44,18 +44,28 @@ function start() {
 	setStartButtonDisabled(true)
 	clearInterval(intervalId)
 
+	let speed;
 	let link_csv = ""
-	const checkedRadio = document.querySelector('input[type="radio"]:checked');
-	if (checkedRadio.id == 'far_left') {
+	const checkedRadioTopic = document.querySelector('input[name="radio-topic"]:checked');
+	if (checkedRadioTopic.id == 'far_left') {
 		link_csv = "https://mateo762.github.io/data/L_user_482_sim_0_idy_0.csv.txt"
-	} else if (checkedRadio.id == 'left') {
+	} else if (checkedRadioTopic.id == 'left') {
 		link_csv = "https://mateo762.github.io/data/CL_user_424_sim_0_idy_0.csv.txt"
-	} else if (checkedRadio.id == 'center') {
+	} else if (checkedRadioTopic.id == 'center') {
 		link_csv = "https://mateo762.github.io/data/C_user_287_sim_0_idy_0.csv.txt"
-	} else if (checkedRadio.id == 'right') {
+	} else if (checkedRadioTopic.id == 'right') {
 		link_csv = "https://mateo762.github.io/data/CR_user_162_sim_0_idy_0.csv.txt"
-	} else if (checkedRadio.id == 'far_right') {
+	} else if (checkedRadioTopic.id == 'far_right') {
 		link_csv = "https://mateo762.github.io/data/R_user_594_sim_0_idy_0.csv.txt"
+	}
+
+	const checkedRadioSpeed = document.querySelector('input[name="radio-speed"]:checked');
+	if(checkedRadioSpeed.id == 'slow'){
+		speed = 0
+	}else if(checkedRadioSpeed.id == 'medium'){
+		speed = 1
+	}else if(checkedRadioSpeed.id == 'fast'){
+		speed = 2
 	}
 
 	const circleData = []
@@ -63,8 +73,6 @@ function start() {
 	let iteration = 0
 	let selectedIteration = -1
 	const numCircles = 20
-
-	console.log(link_csv)
 
 	d3.csv(link_csv, function (data) {
 		if (iteration == numCircles + 1) {
@@ -101,7 +109,6 @@ function start() {
 	function startAnimation() {
 
 		d3.selectAll(".circles-group").remove()
-		const SPEED = 2
 
 		const iterationDuration = [2000, 1500, 1000]
 		const betweenIterationDuration = [2700, 2000, 1500]
@@ -133,9 +140,9 @@ function start() {
 					}
 				})
 				.transition()
-				.duration(circlesAppearDuration[SPEED])
+				.duration(circlesAppearDuration[speed])
 				.delay(function (_d, i) {
-					return (numCircles - i) * circlesAppearDelay[SPEED]
+					return (numCircles - i) * circlesAppearDelay[speed]
 				})
 				.attr("class", function (d) {
 					return "circle-" + d.value
@@ -150,7 +157,7 @@ function start() {
 		function update() {
 			d3.select("#selected")
 				.transition()
-				.duration(circlesRemoveDuration[SPEED])
+				.duration(circlesRemoveDuration[speed])
 				.attr("r", 10)
 				.attr('cx', function (d) {
 					// Return the corresponding box center for each circle
@@ -172,7 +179,7 @@ function start() {
 					return d3.select(this).attr("id") == "non-selected";
 				})
 				.transition()
-				.duration(circlesRemoveDuration[SPEED])
+				.duration(circlesRemoveDuration[speed])
 				.attr('cx', 1000)
 
 			// Remove the non-selected circles
@@ -183,7 +190,7 @@ function start() {
 
 		function updateAll() {
 			updateData(iter)
-			setTimeout(update, iterationDuration[SPEED])
+			setTimeout(update, iterationDuration[speed])
 			iter++
 			if (iter == iterations) {
 				clearInterval(intervalId)
@@ -193,7 +200,7 @@ function start() {
 
 		updateAll()
 
-		intervalId = setInterval(updateAll, betweenIterationDuration[SPEED])
+		intervalId = setInterval(updateAll, betweenIterationDuration[speed])
 	}
 }
 

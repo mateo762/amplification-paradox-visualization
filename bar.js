@@ -32,21 +32,31 @@ const y = d3.scaleLinear()
 
 // Add the x-axis to the chart
 svg.append("g")
-    .attr("transform", `translate(0, ${height_2})`)
-    .call(d3.axisBottom(x));
+  .attr("transform", `translate(0, ${height_2})`)
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+  .style("font-size", "14px") // Increase the font size of the x-axis labels
+  .attr("fill", "#333");
 
 // Add the y-axis to the chart
 svg.append("g")
-    .call(d3.axisLeft(y));
+  .call(d3.axisLeft(y).ticks(5).tickSize(-width_2)) // Add minor ticks and set their length to the width of the chart
+  .selectAll("text")
+  .style("font-size", "14px") // Increase the font size of the y-axis labels
+  .attr("fill", "#333");
+
+// Remove the default path (outline) of the axis
+svg.selectAll(".axis path")
+  .style("display", "none");
 
 // Add event listener to the 'Start animation' button
 // Add event listeners to the radio buttons
-document.querySelectorAll('input[name="radioButton"]').forEach(radio => {
+document.querySelectorAll('input[name="radio-topic"]').forEach(radio => {
     radio.addEventListener('click', updateChart);
 });
 function updateChart() {
     // Get the checked radio button
-    const checkedRadio = document.querySelector('input[name="radioButton"]:checked');
+    const checkedRadio = document.querySelector('input[name="radio-topic"]:checked');
     let selectedData;
 
     switch (checkedRadio.id) {
