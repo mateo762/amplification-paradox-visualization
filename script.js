@@ -118,12 +118,14 @@ function start() {
 
 	function startAnimation() {
 
-		const iterationDuration = 1000
-		const betweenIterationDuration = 1500
+		const SPEED = 2
 
-		const circlesAppearDuration = 600
-		const circlesAppearDelay = 25
-		const circlesRemoveDuration = 600
+		const iterationDuration = [2000,1500,1000]
+		const betweenIterationDuration = [2700,2000,1500]
+
+		const circlesAppearDuration = [1500,900,600]
+		const circlesAppearDelay = [40,35,25]
+		const circlesRemoveDuration = [1500,900,600]
 
 
 		const iterations = circleData.length
@@ -148,9 +150,9 @@ function start() {
 					}
 				})
 				.transition()
-				.duration(circlesAppearDuration)
+				.duration(circlesAppearDuration[SPEED])
 				.delay(function (_d, i) {
-					return (numCircles - i) * circlesAppearDelay
+					return (numCircles - i) * circlesAppearDelay[SPEED]
 				})
 				.attr("class", function (d) {
 					return "circle-" + d.value
@@ -165,7 +167,7 @@ function start() {
 		function update() {
 			d3.select("#selected")
 				.transition()
-				.duration(circlesRemoveDuration)
+				.duration(circlesRemoveDuration[SPEED])
 				.attr("r", 10)
 				.attr('cx', function (d) {
 					// Return the corresponding box center for each circle
@@ -187,7 +189,7 @@ function start() {
 					return d3.select(this).attr("id") == "non-selected";
 				})
 				.transition()
-				.duration(circlesRemoveDuration)
+				.duration(circlesRemoveDuration[SPEED])
 				.attr('cx', 1000)
 
 			// Remove the non-selected circles
@@ -198,7 +200,7 @@ function start() {
 
 		function updateAll() {
 			updateData(iter)
-			setTimeout(update, iterationDuration)
+			setTimeout(update, iterationDuration[SPEED])
 			iter++
 			if (iter == iterations) {
 				clearInterval(interval)
@@ -207,6 +209,6 @@ function start() {
 
 		updateAll()
 
-		const interval = setInterval(updateAll, betweenIterationDuration)
+		const interval = setInterval(updateAll, betweenIterationDuration[SPEED])
 	}
 }
