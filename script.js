@@ -60,11 +60,11 @@ function start() {
 	}
 
 	const checkedRadioSpeed = document.querySelector('input[name="radio-speed"]:checked');
-	if(checkedRadioSpeed.id == 'slow'){
+	if (checkedRadioSpeed.id == 'slow') {
 		speed = 0
-	}else if(checkedRadioSpeed.id == 'medium'){
+	} else if (checkedRadioSpeed.id == 'medium') {
 		speed = 1
-	}else if(checkedRadioSpeed.id == 'fast'){
+	} else if (checkedRadioSpeed.id == 'fast') {
 		speed = 2
 	}
 
@@ -76,9 +76,15 @@ function start() {
 
 	d3.csv(link_csv, function (data) {
 		if (iteration == numCircles + 1) {
+			shuffledOneIteration = shuffle(oneIteration)
+			for(let i=0; i<numCircles+1; ++i){
+				if(shuffledOneIteration[i].kind == 'choice'){
+					selectedIteration = i
+				}
+			}
 			circleData.push({
 				selected: selectedIteration,
-				circles: oneIteration
+				circles: shuffledOneIteration
 			})
 			oneIteration = []
 			iteration = 0
@@ -89,11 +95,7 @@ function start() {
 			idx: data.idx,
 			radius: 10
 		})
-		if (data.kind == 'choice') {
-			selectedIteration = iteration
-		}
 		iteration++
-
 	}).then(startAnimation);
 
 
@@ -108,6 +110,7 @@ function start() {
 
 	function startAnimation() {
 
+		console.log(circleData)
 		d3.selectAll(".circles-group").remove()
 
 		const iterationDuration = [2000, 1500, 1000]
@@ -214,11 +217,29 @@ function stop() {
 document.querySelector(".stop-button").addEventListener("click", stop);
 
 
-function setStartButtonDisabled(isDisabled){
+function setStartButtonDisabled(isDisabled) {
 	startButton.disabled = isDisabled
-	if(isDisabled){
+	if (isDisabled) {
 		startButton.classList.add("disabled")
-	}else{
+	} else {
 		startButton.classList.remove("disabled")
 	}
+}
+
+function shuffle(array) {
+	let currentIndex = array.length, randomIndex;
+
+	// While there remain elements to shuffle.
+	while (currentIndex != 0) {
+
+		// Pick a remaining element.
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex--;
+
+		// And swap it with the current element.
+		[array[currentIndex], array[randomIndex]] = [
+			array[randomIndex], array[currentIndex]];
+	}
+
+	return array;
 }
