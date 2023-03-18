@@ -22,43 +22,26 @@
 
 
 // Define the dimensions of the SVG container
-var width = 690,
+const width = 690,
 	height = 230;
 
 
 // Define the number of boxes
-var numBoxes = 5;
-
-// Define the radius of the circles
-var radius = 30;
-
-
-// Define number of recommendations
-
-// Define the data for the circles
-// var circleData = d3.range(iterations).map(function (d) {
-// 	return {
-// 		selected: Math.floor(Math.random() * 5), // Random value between 0 and 4
-// 		circles: d3.range(5).map(function (d) {
-// 			return {
-// 				value: Math.floor(Math.random() * 5) + 1,
-// 				radius: 10
-// 			}
-// 		})
-// 	};
-// });
-
-
-
-
+const numBoxes = 5;
+const boxWidth = 90
+const boxHeight = 100;
+const boxOpacity = 0.3
 // Define the x-coordinate of the first box
-var boxX = 0;
-
+const boxX = 0;
 // Define the x-coordinate increment for each box
-var boxXIncrement = 150;
+const boxXIncrement = 150;
+
+
+const circlesSeparation = 30
+const circleRadius = 10
 
 // Create a group for the boxes
-var boxGroup = d3.select("#animation").append("g")
+const boxGroup = d3.select("#animation").append("g")
 	.attr("class", "box-group")
 
 // Create the boxes
@@ -70,18 +53,17 @@ boxes = boxGroup.selectAll(".box")
 		return 'box-' + i
 	})
 	.attr("x", function (d, i) { return boxX + (boxXIncrement * i); })
-	.attr("y", height - 100)
-	.attr("width", radius * 3)
-	.attr("height", 100)
-	.attr("opacity", 0.3)
+	.attr("y", height - boxHeight)
+	.attr("width", boxWidth)
+	.attr("height", boxHeight)
+	.attr("opacity", boxOpacity)
 
 document.querySelector(".start-button").addEventListener("click", start)
 
 function start() {
-	
+
 	let link_csv = ""
 	const checkedRadio = document.querySelector('input[type="radio"]:checked');
-	console.log("hola" + checkedRadio.id)
 	if (checkedRadio.id == 'far_left') {
 		link_csv = "https://mateo762.github.io/data/L_user_482_sim_0_idy_0.csv.txt"
 	} else if (checkedRadio.id == 'left') {
@@ -94,15 +76,16 @@ function start() {
 		link_csv = "https://mateo762.github.io/data/R_user_594_sim_0_idy_0.csv.txt"
 	}
 
-	var circleData = []
-	var oneIteration = []
+	const circleData = []
+	let oneIteration = []
 	let iteration = 0
 	let selectedIteration = -1
+	const numCircles = 20
 
 	console.log(link_csv)
 
 	d3.csv(link_csv, function (data) {
-		if (iteration == 21) {
+		if (iteration == numCircles + 1) {
 			circleData.push({
 				selected: selectedIteration,
 				circles: oneIteration
@@ -135,86 +118,87 @@ function start() {
 
 	function startAnimation() {
 
-		// Define number of iterations
-		var iterations = 19
+		const iterationDuration = 1000
+		const betweenIterationDuration = 1500
 
-		var circleGroup = d3.select("#animation")
+		const circlesAppearDuration = 600
+		const circlesAppearDelay = 25
+		const circlesRemoveDuration = 600
+
+
+		const iterations = circleData.length
+		const countTopics = [0, 0, 0, 0, 0]
+		const circleLastCx = circleRadius + (circlesSeparation * numCircles - 1)
+
+		const circleGroup = d3.select("#animation")
 			.append("g")
 			.attr("class", "circles-group");
 
-		var circles = []
-		var circlesSelected = []
-
-		var num_group = [0, 0, 0, 0, 0]
-
 		function updateData(iteration) {
-			circles = circleGroup.selectAll(".circle")
+			circleGroup.selectAll(".circle")
 				.data(circleData[iteration].circles)
 				.enter()
 				.append("circle")
 				.attr("id", function (d, i) {
 					if (i == circleData[iteration].selected) {
-						num_group[d.value - 1]++
+						countTopics[d.value - 1]++
 						return "selected"
 					} else {
 						return "non-selected"
 					}
 				})
 				.transition()
-				.duration(500)
+				.duration(circlesAppearDuration)
 				.delay(function (_d, i) {
-					return i * 15
+					return (numCircles - i) * circlesAppearDelay
 				})
 				.attr("class", function (d) {
 					return "circle-" + d.value
 				})
 				.attr("cx", function (d, i) {
-					return 10 + (30 * i)
+					return ((width - circleLastCx) - circleRadius) / 2 + circleRadius + (circlesSeparation * i)
 				})
 				.attr("cy", 40)
-				.attr("r", 10)
-
-			circlesSelected.push(circleData[iteration].circles[circleData[iteration].selected])
+				.attr("r", circleRadius)
 		}
 
 		function update() {
 			d3.select("#selected")
-				.transition(1000)
-				.duration(600)
+				.transition()
+				.duration(circlesRemoveDuration)
 				.attr("r", 10)
 				.attr('cx', function (d) {
 					// Return the corresponding box center for each circle
-					position = (num_group[d.value - 1] - 1) % 4
-					var boxIndex = d.value - 1;
-					var boxCenterX = boxX + (boxXIncrement * boxIndex) + (radius * 1.5);
-					//return (boxCenterX - radius * 1.5 - d.radius)-(3*2*d.radius)/4
-					return (boxCenterX + radius * 1.5 - d.radius) - position * 2 * d.radius - 5
+					position = (countTopics[d.value - 1] - 1) % 4
+					const boxIndex = d.value - 1;
+					const boxCenterX = boxX + (boxXIncrement * boxIndex) + ((boxWidth / 3) * 1.5);
+					return (boxCenterX + (boxWidth / 3) * 1.5 - d.radius) - position * 2 * d.radius - 5
 
 				})
 				.attr('cy', function (d) {
-					position = num_group[d.value - 1] - 1 == 0 ? 0 : Math.floor((num_group[d.value - 1] - 1) / 4)
+					position = countTopics[d.value - 1] - 1 == 0 ? 0 : Math.floor((countTopics[d.value - 1] - 1) / 4)
 					return (height - d.radius) - position * 2 * d.radius
 				})
 				.attr('id', null)
 
 			// Add a filter to select only the non-selected circles
-			var nonSelected = circleGroup.selectAll("circle")
+			const nonSelectedCircles = circleGroup.selectAll("circle")
 				.filter(function (d) {
 					return d3.select(this).attr("id") == "non-selected";
 				})
-				.transition(1000)
-				.duration(600)
+				.transition()
+				.duration(circlesRemoveDuration)
 				.attr('cx', 1000)
 
 			// Remove the non-selected circles
-			nonSelected.remove();
+			nonSelectedCircles.remove();
 		}
 
 		let iter = 0
 
 		function updateAll() {
 			updateData(iter)
-			setTimeout(update, 1000)
+			setTimeout(update, iterationDuration)
 			iter++
 			if (iter == iterations) {
 				clearInterval(interval)
@@ -223,6 +207,6 @@ function start() {
 
 		updateAll()
 
-		var interval = setInterval(updateAll, 1500)
+		const interval = setInterval(updateAll, betweenIterationDuration)
 	}
 }
