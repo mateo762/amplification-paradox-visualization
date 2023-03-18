@@ -1,26 +1,3 @@
-// let link_csv = ""
-// const button = document.querySelector('button');
-// button.addEventListener('click', () => {
-// 	const checkedRadio = document.querySelector('input[type="radio"]:checked');
-// 	if (checkedRadio.id == 'far_left') {
-// 		link_csv = "https://github.com/mateo762/mateo762.github.io/blob/main/data/L_user_482_sim_0_idy_0.csv.txt"
-// 	} else if (checkedRadio.id == 'left') {
-// 		link_csv = "https://github.com/mateo762/mateo762.github.io/blob/main/data/CL_user_424_sim_0_idy_0.csv.txt"
-// 	} else if (checkedRadio.id == 'center') {
-// 		link_csv = "https://github.com/mateo762/mateo762.github.io/blob/main/data/C_user_287_sim_0_idy_0.csv.txt"
-// 	} else if (checkedRadio.id == 'right') {
-// 		link_csv = "https://github.com/mateo762/mateo762.github.io/blob/main/data/CR_user_162_sim_0_idy_0.csv.txt"
-// 	} else if (checkedRadio.id == 'far_right') {
-// 		link_csv = "https://github.com/mateo762/mateo762.github.io/blob/main/data/R_user_594_sim_0_idy_0.csv.txt"
-// 	}
-// });
-
-// function start() {
-// 	d3.csv(link_csv, function (data) {...} // This doesn't work
-// 	d3.csv("https://github.com/mateo762/mateo762.github.io/blob/main/data/R_user_594_sim_0_idy_0.csv.txt", function (data) {...} // this works
-// }
-
-
 // Define the dimensions of the SVG container
 const width = 690,
 	height = 230;
@@ -58,9 +35,14 @@ boxes = boxGroup.selectAll(".box")
 	.attr("height", boxHeight)
 	.attr("opacity", boxOpacity)
 
-document.querySelector(".start-button").addEventListener("click", start)
+const startButton = document.querySelector(".start-button")
+startButton.addEventListener("click", start)
+
+let intervalId;
 
 function start() {
+	setStartButtonDisabled(true)
+	clearInterval(intervalId)
 
 	let link_csv = ""
 	const checkedRadio = document.querySelector('input[type="radio"]:checked');
@@ -118,14 +100,15 @@ function start() {
 
 	function startAnimation() {
 
+		d3.selectAll(".circles-group").remove()
 		const SPEED = 2
 
-		const iterationDuration = [2000,1500,1000]
-		const betweenIterationDuration = [2700,2000,1500]
+		const iterationDuration = [2000, 1500, 1000]
+		const betweenIterationDuration = [2700, 2000, 1500]
 
-		const circlesAppearDuration = [1500,900,600]
-		const circlesAppearDelay = [40,35,25]
-		const circlesRemoveDuration = [1500,900,600]
+		const circlesAppearDuration = [1500, 900, 600]
+		const circlesAppearDelay = [40, 35, 25]
+		const circlesRemoveDuration = [1500, 900, 600]
 
 
 		const iterations = circleData.length
@@ -181,7 +164,7 @@ function start() {
 					position = countTopics[d.value - 1] - 1 == 0 ? 0 : Math.floor((countTopics[d.value - 1] - 1) / 4)
 					return (height - d.radius) - position * 2 * d.radius
 				})
-				.attr('id', null)
+				.attr('id', "inside")
 
 			// Add a filter to select only the non-selected circles
 			const nonSelectedCircles = circleGroup.selectAll("circle")
@@ -203,12 +186,32 @@ function start() {
 			setTimeout(update, iterationDuration[SPEED])
 			iter++
 			if (iter == iterations) {
-				clearInterval(interval)
+				clearInterval(intervalId)
+				setStartButtonDisabled(false)
 			}
 		}
 
 		updateAll()
 
-		const interval = setInterval(updateAll, betweenIterationDuration[SPEED])
+		intervalId = setInterval(updateAll, betweenIterationDuration[SPEED])
+	}
+}
+
+
+function stop() {
+	clearInterval(intervalId);
+	setStartButtonDisabled(false)
+	d3.selectAll(".circles-group").selectAll(".inside").remove();
+}
+
+document.querySelector(".stop-button").addEventListener("click", stop);
+
+
+function setStartButtonDisabled(isDisabled){
+	startButton.disabled = isDisabled
+	if(isDisabled){
+		startButton.classList.add("disabled")
+	}else{
+		startButton.classList.remove("disabled")
 	}
 }

@@ -78,24 +78,46 @@ g{
   color: red;
 }
 
-
-/* Start animation button */
-.start-button {
+/* Start and Stop Button*/
+.start-button,
+.stop-button {
   font-family: Arial, sans-serif;
   font-size: 14px;
   padding: 8px 16px;
-  background-color: #007bff;
   border: 1px solid #007bff;
   border-radius: 4px;
-  color: #ffffff;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
+}
+
+.start-button {
+  background-color: #007bff;
+  color: #ffffff;
+  margin-right: 10px;
 }
 
 .start-button:hover {
   background-color: #0056b3;
   border-color: #0056b3;
 }
+
+.start-button.disabled {
+  background-color: #a7b3c0;
+  border-color: #a7b3c0;
+  cursor: not-allowed;
+}
+
+.stop-button {
+  background-color: #dc3545;
+  border-color: #dc3545;
+  color: #ffffff;
+}
+
+.stop-button:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
 
 /* Additional styles for the axes */
 .axis path,
