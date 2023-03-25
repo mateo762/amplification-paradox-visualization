@@ -47,16 +47,32 @@ function start() {
 	let speed;
 	let link_csv = ""
 	const checkedRadioTopic = document.querySelector('input[name="radio-topic"]:checked');
-	if (checkedRadioTopic.id == 'far_left') {
-		link_csv = "https://mateo762.github.io/data/L_user_482_sim_0_idy_0.csv.txt"
-	} else if (checkedRadioTopic.id == 'left') {
-		link_csv = "https://mateo762.github.io/data/CL_user_424_sim_0_idy_0.csv.txt"
-	} else if (checkedRadioTopic.id == 'center') {
-		link_csv = "https://mateo762.github.io/data/C_user_287_sim_0_idy_0.csv.txt"
-	} else if (checkedRadioTopic.id == 'right') {
-		link_csv = "https://mateo762.github.io/data/CR_user_162_sim_0_idy_0.csv.txt"
-	} else if (checkedRadioTopic.id == 'far_right') {
-		link_csv = "https://mateo762.github.io/data/R_user_594_sim_0_idy_0.csv.txt"
+	const checkedMode = document.querySelector("#checkbox-mode")
+
+	if (checkedMode.checked) {
+		if (checkedRadioTopic.id == 'far_left') {
+			link_csv = "https://mateo762.github.io/data/R_L_user_482_sim_0_idy_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'left') {
+			link_csv = "https://mateo762.github.io/data/R_CL_user_424_sim_0_idy_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'center') {
+			link_csv = "https://mateo762.github.io/data/R_C_user_287_sim_0_idy_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'right') {
+			link_csv = "https://mateo762.github.io/data/R_CR_user_162_sim_0_idy_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'far_right') {
+			link_csv = "https://mateo762.github.io/data/R_R_user_594_sim_0_idy_0.csv.txt"
+		}
+	} else {
+		if (checkedRadioTopic.id == 'far_left') {
+			link_csv = "https://mateo762.github.io/data/U_L_user_0_idy_1011_sim_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'left') {
+			link_csv = "https://mateo762.github.io/data/U_CL_user_150_idy_1629.csv_sim_0.txt"
+		} else if (checkedRadioTopic.id == 'center') {
+			link_csv = "https://mateo762.github.io/data/U_C_user_300_idy_156_sim_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'right') {
+			link_csv = "https://mateo762.github.io/data/U_CR_user_450_idy_963_sim_0.csv.txt"
+		} else if (checkedRadioTopic.id == 'far_right') {
+			link_csv = "https://mateo762.github.io/data/U_L_user_599_idy_364_sim_0.csv.txt"
+		}
 	}
 
 	const checkedRadioSpeed = document.querySelector('input[name="radio-speed"]:checked');
@@ -77,8 +93,8 @@ function start() {
 	d3.csv(link_csv, function (data) {
 		if (iteration == numCircles + 1) {
 			shuffledOneIteration = shuffle(oneIteration)
-			for(let i=0; i<numCircles+1; ++i){
-				if(shuffledOneIteration[i].kind == 'choice'){
+			for (let i = 0; i < numCircles + 1; ++i) {
+				if (shuffledOneIteration[i].kind == 'choice') {
 					selectedIteration = i
 				}
 			}
