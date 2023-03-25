@@ -71,7 +71,7 @@ function start() {
 		} else if (checkedRadioTopic.id == 'right') {
 			link_csv = "https://mateo762.github.io/data/U_CR_user_450_idy_963_sim_0.csv.txt"
 		} else if (checkedRadioTopic.id == 'far_right') {
-			link_csv = "https://mateo762.github.io/data/U_L_user_599_idy_364_sim_0.csv.txt"
+			link_csv = "https://mateo762.github.io/data/U_R_user_599_idy_364_sim_0.csv.txt"
 		}
 	}
 
