@@ -36,11 +36,6 @@ g{
   height: 90vh;
 }
 
-.radio-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 .radio-margin {
   margin-right: 10px;
@@ -60,6 +55,12 @@ g{
   justify-content: space-between;
   align-items: center;
   width: 690px;
+}
+
+.radio-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .radio-container label {
