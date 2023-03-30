@@ -1,6 +1,10 @@
 const colors = ['#1919e6','#6060b1','#808080','#b34d4d','#e61919'];
 const totalHeight = 200;
 
+const examplePlots = ['User:R/Measure:L', 'User:R/Measure:CL', 'User:R/Measure:C',
+    'User:R/Measure:CR', 'User:R/Measure:R']
+
+
 const exampleName = 'User:R';
 const mode = 'choice';
 
