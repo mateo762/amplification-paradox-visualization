@@ -23,17 +23,6 @@ d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
         .range([0, width_2])
         .padding(0.1);
 
-
-    const temp = (value) => {
-        if (value <= 0.025) {
-            return d3.scaleLinear()
-                .domain([0, 0.025])
-                .range([0, 1])(value);
-        } else {
-            return 0.2;
-        }
-    };
-
     const y = d3.scaleLinear()
         .domain([0, 1])
         .range([height_2, 0]);
@@ -106,6 +95,7 @@ d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
                 default:
                     return;
             }
+            selectedData = normalizeArray(selectedData)
         }
         else {
             selectedData = random_data
@@ -126,9 +116,9 @@ d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
             .transition()
             .duration(transitionDuration)
             .attr("x", (d, i) => x(i))
-            .attr("y", d => y(temp(d.Value)))
+            .attr("y", d => y(d.Value))
             .attr("width", x.bandwidth())
-            .attr("height", d => height_2 - y(temp(d.Value)))
+            .attr("height", d => height_2 - y(d.Value))
             .attr("fill", (d, i) => colors[i]);
 
         // Enter new bars with transition
@@ -142,8 +132,8 @@ d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
             .attr("fill", (d, i) => colors[i])
             .transition()
             .duration(transitionDuration)
-            .attr("y", d => y(temp(d.Value)))
-            .attr("height", d => height_2 - y(temp(d.Value)));
+            .attr("y", d => y(d.Value))
+            .attr("height", d => height_2 - y(d.Value));
 
         // Remove old bars with transition
         bars.exit()
@@ -158,3 +148,14 @@ d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
     updateChart();
 });
 
+
+function normalizeArray(array) {
+  let sum = 0;
+  for (let i = 0; i < array.length; i++) {
+    sum += parseFloat(array[i].Value);
+  }
+  for (let i = 0; i < array.length; i++) {
+    array[i].Value = (parseFloat(array[i].Value) / sum).toString();
+  }
+  return array;
+}
