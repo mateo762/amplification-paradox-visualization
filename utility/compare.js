@@ -9,6 +9,8 @@ const plotNames = ['Start:C/Measure:L', 'Start:CR/Measure:L', 'Start:R/Measure:L
     'Start:C/Measure:R', 'Start:CR/Measure:R', 'Start:R/Measure:R',
     'User:C/Measure:R', 'User:CR/Measure:R', 'User:R/Measure:R']
 
+const names = ['L', 'CL', 'C', 'CR', 'R']
+
 const namePlots = ['User:L/', 'User:CL/', 'User:C/', 'User:CR/', 'User:R/']
 
 const plots = [['User:L/Measure:L', 'User:L/Measure:CL', 'User:L/Measure:C',
@@ -55,14 +57,20 @@ function updateIndex(index) {
     d3.select('svg').html('')
     d3.select('#rectangle-compare').html('')
 
-    d3.csv("https://mateo762.github.io/data/plots.csv.txt").then((data) => {
-        const plotDataCircle = plots[index].map(plotName => {
-            return data.filter(d => d.Plot === plotName && d.Line === mode);
-        });
-        const plotDataRectangle = data.filter(d => d.Plot.startsWith(namePlots[index]) && d.Line === mode);
-        console.log(plotDataRectangle)
-        animateCircles = createAnimationRectangles(plotDataCircle);
-        animateRectangle = createRectangleCompare(plotDataRectangle);
+    d3.csv("https://mateo762.github.io/data/plots.csv.txt").then((dataPlots) => {
+        d3.csv("https://mateo762.github.io/data/relative_utility.csv.txt").then((dataUtility) => {
+            const plotDataCircle = plots[index].map(plotName => {
+                return dataPlots.filter(d => d.Plot === plotName && d.Line === mode);
+            });
+            const plotDataRectangle = dataPlots.filter(d => d.Plot.startsWith(namePlots[index]) && d.Line === mode);
+            const utilityData = dataUtility.filter(d => d.Start === names[index])
+            animateCircles = createAnimationRectangles(plotDataCircle, utilityData);
+            animateRectangle = createRectangleCompare(plotDataRectangle);
+
+            console.log("hola")
+            console.log(utilityData)
+            console.log("-------")
+        })
     });
 
     function startAnimation() {
@@ -128,32 +136,47 @@ function updateIndex(index) {
     }
 
 
-    function createAnimationRectangles(dataArray) {
+    function createAnimationRectangles(dataArray, dataUtility) {
 
         const maxRadius = 50;
         const squareSize = maxRadius * 2;
         const squareSpacing = 10;
 
         const totalWidth = dataArray.length * squareSize + (dataArray.length - 1) * squareSpacing;
-        const xOffset = (width-totalWidth)/2; // Calculate the xOffset to center the squares
+        const xOffset = (width - totalWidth) / 2; // Calculate the xOffset to center the squares
 
 
         const squares = dataArray.map((data, i) => {
-            const maxValue = d3.max(data, d => parseFloat(d.Value));
+            const relativeUtility = (dataUtility.filter(d => d.Measure === names[i]))[0].Value
+            let maxValue = d3.max(data, d => parseFloat(d.Value));
+            maxValue = maxValue > relativeUtility ? maxValue : relativeUtility
             const scale = d3.scaleLinear()
                 .domain([0, maxValue])
                 .range([0, squareSize]);
 
             const initialSize = scale(parseFloat(data[0].Value));
+            const utilitySize = scale(parseFloat(relativeUtility))
+
+            const filledSquare = svg .append('rect')
+                .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
+                .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
+                .attr('width', initialSize)
+                .attr('height', initialSize)
+                .attr('fill', () => colors[i])
+
+            // Add static square border with no color inside
+            const borderSquare = svg.append('rect')
+                .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - utilitySize / 2)
+                .attr('y', height / 2 - 40 - utilitySize / 2)
+                .attr('width', utilitySize)
+                .attr('height', utilitySize)
+                .attr('fill', 'none')
+                .attr('stroke', 'black')
+                .attr('stroke-width', 1);
 
             return {
-                square: svg
-                    .append('rect')
-                    .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
-                    .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
-                    .attr('width', initialSize)
-                    .attr('height', initialSize)
-                    .attr('fill', () => colors[i]),
+                square: filledSquare,
+                borderSquare: borderSquare,
                 scale: scale
             };
         });
@@ -182,8 +205,6 @@ function updateIndex(index) {
             if (i >= dataArray[0].length) return;
 
             squares.forEach((squareObj, plotIndex) => {
-                console.log("hey")
-                console.log(squareObj)
                 const data = dataArray[plotIndex];
                 const square = squareObj.square;
                 const scale = squareObj.scale;
@@ -219,79 +240,86 @@ function updateIndex(index) {
 
 
 
-    function createAnimationCircles(dataArray) {
-
-        const maxRadius = 50;
-        const circleSpacing = (width - 2 * (50 + maxRadius) - 100) / (dataArray.length - 1); // Adjust the circleSpacing calculation
-
-        const circles = dataArray.map((data, i) => {
-            const maxValue = d3.max(data, d => parseFloat(d.Value));
-            const scale = d3.scaleLinear()
-                .domain([0, maxValue])
-                .range([0, maxRadius]);
-
-            return {
-                circle: svg.append('circle')
-                    .attr('cx', 50 + maxRadius + 50 + i * circleSpacing) // Add 50 to the cx attribute
-                    .attr('cy', height / 2 - 40)
-                    .attr('r', scale(parseFloat(data[0].Value)))
-                    .attr('fill', () => colors[i]),
-                scale: scale
-            };
-        });
-
-        const progressBar = svg.append('rect')
-            .attr('x', 50 + maxRadius + 50) // Add 50 to the x attribute
-            .attr('y', height - 50)
-            .attr('width', 0)
-            .attr('height', 20)
-            .attr('fill', 'black');
-
-        const progressScale = d3.scaleLinear()
-            .domain([0, 20])
-            .range([0, width - 100 - maxRadius - maxRadius - 100]); // Adjust the range calculation
-
-        const progressBarBorder = svg.append('rect')
-            .attr('x', 50 + maxRadius + 50) // Same x as the progress bar
-            .attr('y', height - 50) // Same y as the progress bar
-            .attr('width', progressScale(20)) // Same width as the progress bar when it's fully transitioned
-            .attr('height', 20) // Same height as the progress bar
-            .attr('fill', 'none') // No fill color
-            .attr('stroke', 'black') // Add a stroke (border) color
-            .attr('stroke-width', 1); // Set the stroke (border) width
-
-
-        function animateCircles(i) {
-            if (i >= dataArray[0].length) return;
-
-            circles.forEach((circleObj, plotIndex) => {
-                const data = dataArray[plotIndex];
-                const circle = circleObj.circle;
-                const scale = circleObj.scale;
-
-                circle.transition()
-                    .duration(600)
-                    .attr('r', scale(parseFloat(data[i].Value)))
-                    .on('end', () => {
-                        if (plotIndex === dataArray.length - 1) {
-                            animateCircles(i + 1);
-                        }
-                    });
-            });
-            if (i === 0) {
-                progressBar.transition()
-                    .duration(600 * dataArray[0].length)
-                    .ease(d3.easeLinear)
-                    .attr('width', progressScale(20));
-            }
-
-            setTimeout(() => animateCircles(i + 1), 600);
-        }
-
-
-        //animateCircles(0, 0);
-        return animateCircles
-    }
 }
 
 updateIndex(4)
+
+
+
+
+
+
+
+    // function createAnimationCircles(dataArray) {
+
+    //     const maxRadius = 50;
+    //     const circleSpacing = (width - 2 * (50 + maxRadius) - 100) / (dataArray.length - 1); // Adjust the circleSpacing calculation
+
+    //     const circles = dataArray.map((data, i) => {
+    //         const maxValue = d3.max(data, d => parseFloat(d.Value));
+    //         const scale = d3.scaleLinear()
+    //             .domain([0, maxValue])
+    //             .range([0, maxRadius]);
+
+    //         return {
+    //             circle: svg.append('circle')
+    //                 .attr('cx', 50 + maxRadius + 50 + i * circleSpacing) // Add 50 to the cx attribute
+    //                 .attr('cy', height / 2 - 40)
+    //                 .attr('r', scale(parseFloat(data[0].Value)))
+    //                 .attr('fill', () => colors[i]),
+    //             scale: scale
+    //         };
+    //     });
+
+    //     const progressBar = svg.append('rect')
+    //         .attr('x', 50 + maxRadius + 50) // Add 50 to the x attribute
+    //         .attr('y', height - 50)
+    //         .attr('width', 0)
+    //         .attr('height', 20)
+    //         .attr('fill', 'black');
+
+    //     const progressScale = d3.scaleLinear()
+    //         .domain([0, 20])
+    //         .range([0, width - 100 - maxRadius - maxRadius - 100]); // Adjust the range calculation
+
+    //     const progressBarBorder = svg.append('rect')
+    //         .attr('x', 50 + maxRadius + 50) // Same x as the progress bar
+    //         .attr('y', height - 50) // Same y as the progress bar
+    //         .attr('width', progressScale(20)) // Same width as the progress bar when it's fully transitioned
+    //         .attr('height', 20) // Same height as the progress bar
+    //         .attr('fill', 'none') // No fill color
+    //         .attr('stroke', 'black') // Add a stroke (border) color
+    //         .attr('stroke-width', 1); // Set the stroke (border) width
+
+
+    //     function animateCircles(i) {
+    //         if (i >= dataArray[0].length) return;
+
+    //         circles.forEach((circleObj, plotIndex) => {
+    //             const data = dataArray[plotIndex];
+    //             const circle = circleObj.circle;
+    //             const scale = circleObj.scale;
+
+    //             circle.transition()
+    //                 .duration(600)
+    //                 .attr('r', scale(parseFloat(data[i].Value)))
+    //                 .on('end', () => {
+    //                     if (plotIndex === dataArray.length - 1) {
+    //                         animateCircles(i + 1);
+    //                     }
+    //                 });
+    //         });
+    //         if (i === 0) {
+    //             progressBar.transition()
+    //                 .duration(600 * dataArray[0].length)
+    //                 .ease(d3.easeLinear)
+    //                 .attr('width', progressScale(20));
+    //         }
+
+    //         setTimeout(() => animateCircles(i + 1), 600);
+    //     }
+
+
+    //     //animateCircles(0, 0);
+    //     return animateCircles
+    // }

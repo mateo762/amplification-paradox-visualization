@@ -1,7 +1,7 @@
 const random_data = Array.from({ length: 5 }, () => ({ "Value": 0.2 }));
 
 
-d3.csv("https://mateo762.github.io/data/relative_utility.csv.txt").then((data) => {
+d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
     // Define the dimensions of the chart
     const width_2 = 500;
     const height_2 = 300;
