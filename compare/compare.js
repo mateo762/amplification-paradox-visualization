@@ -9,7 +9,7 @@ const plotNames = ['Start:C/Measure:L', 'Start:CR/Measure:L', 'Start:R/Measure:L
     'Start:C/Measure:R', 'Start:CR/Measure:R', 'Start:R/Measure:R',
     'User:C/Measure:R', 'User:CR/Measure:R', 'User:R/Measure:R']
 
-const namePlots = ['User:L', 'User:CL', 'User:C', 'User:CR', 'User:R']
+const namePlots = ['User:L/', 'User:CL/', 'User:C/', 'User:CR/', 'User:R/']
 
 const plots = [['User:L/Measure:L', 'User:L/Measure:CL', 'User:L/Measure:C',
     'User:L/Measure:CR', 'User:L/Measure:R'],
@@ -60,7 +60,8 @@ function updateIndex(index) {
             return data.filter(d => d.Plot === plotName && d.Line === mode);
         });
         const plotDataRectangle = data.filter(d => d.Plot.startsWith(namePlots[index]) && d.Line === mode);
-        animateCircles = createAnimationCircles(plotDataCircle);
+        console.log(plotDataRectangle)
+        animateCircles = createAnimationRectangles(plotDataCircle);
         animateRectangle = createRectangleCompare(plotDataRectangle);
     });
 
@@ -73,13 +74,11 @@ function updateIndex(index) {
 
     function createRectangleCompare(plotData) {
         totalHeight = height / 1.25
-        console.log(plotData)
         L = plotData.filter(d => d.Plot.endsWith(":L")).map(d => d.Value);
         CL = plotData.filter(d => d.Plot.endsWith(":CL")).map(d => d.Value);
         C = plotData.filter(d => d.Plot.endsWith(":C")).map(d => d.Value);
         CR = plotData.filter(d => d.Plot.endsWith(":CR")).map(d => d.Value);
         R = plotData.filter(d => d.Plot.endsWith(":R")).map(d => d.Value);
-        console.log(L)
 
         const numIterations = L.length;
         const transitionDuration = 600;
@@ -111,6 +110,7 @@ function updateIndex(index) {
             .duration(transitionDuration)
             .style('height', d => `${scale(d)}px`);
 
+        console.log("length: ", L.length)
         function update(iteration) {
             const currentValues = [L[iteration], CL[iteration], C[iteration], CR[iteration], R[iteration]];
             console.log(currentValues)
@@ -132,7 +132,7 @@ function updateIndex(index) {
 
         const maxRadius = 50;
         const squareSize = maxRadius * 2;
-        const squareSpacing = 0;
+        const squareSpacing = 10;
 
         const totalWidth = dataArray.length * squareSize + (dataArray.length - 1) * squareSpacing;
         const xOffset = (width-totalWidth)/2; // Calculate the xOffset to center the squares
