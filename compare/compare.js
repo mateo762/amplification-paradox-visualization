@@ -11,6 +11,8 @@ const plotNames = ['Start:C/Measure:L', 'Start:CR/Measure:L', 'Start:R/Measure:L
 
 const namePlots = ['User:L/', 'User:CL/', 'User:C/', 'User:CR/', 'User:R/']
 
+const names = ['L', 'CL', 'C', 'CR', 'R']
+
 const plots = [['User:L/Measure:L', 'User:L/Measure:CL', 'User:L/Measure:C',
     'User:L/Measure:CR', 'User:L/Measure:R'],
 ['User:CL/Measure:L', 'User:CL/Measure:CL', 'User:CL/Measure:C',
@@ -60,7 +62,6 @@ function updateIndex(index) {
             return data.filter(d => d.Plot === plotName && d.Line === mode);
         });
         const plotDataRectangle = data.filter(d => d.Plot.startsWith(namePlots[index]) && d.Line === mode);
-        console.log(plotDataRectangle)
         animateCircles = createAnimationRectangles(plotDataCircle);
         animateRectangle = createRectangleCompare(plotDataRectangle);
     });
@@ -110,10 +111,8 @@ function updateIndex(index) {
             .duration(transitionDuration)
             .style('height', d => `${scale(d)}px`);
 
-        console.log("length: ", L.length)
         function update(iteration) {
             const currentValues = [L[iteration], CL[iteration], C[iteration], CR[iteration], R[iteration]];
-            console.log(currentValues)
             segments.data(currentValues)
                 .transition()
                 .duration(transitionDuration)
@@ -131,31 +130,44 @@ function updateIndex(index) {
     function createAnimationRectangles(dataArray) {
 
         const maxRadius = 50;
-        const squareSize = maxRadius * 2;
+        const squareSize = 150;
         const squareSpacing = 10;
 
         const totalWidth = dataArray.length * squareSize + (dataArray.length - 1) * squareSpacing;
-        const xOffset = (width-totalWidth)/2; // Calculate the xOffset to center the squares
+        const xOffset = (width - totalWidth) / 2; // Calculate the xOffset to center the squares
+
+        const scale = d3.scalePow()
+            .exponent(3)
+            .domain([0, 1])
+            .range([5, squareSize])
 
 
         const squares = dataArray.map((data, i) => {
-            const maxValue = d3.max(data, d => parseFloat(d.Value));
-            const scale = d3.scaleLinear()
-                .domain([0, maxValue])
-                .range([0, squareSize]);
-
             const initialSize = scale(parseFloat(data[0].Value));
 
+            const filledSquare = svg
+                .append('rect')
+                .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
+                .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
+                .attr('width', initialSize)
+                .attr('height', initialSize)
+                .attr('fill', () => colors[i])
+
+            const borderSquare = svg
+                .append('rect')
+                .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
+                .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
+                .attr('width', initialSize)
+                .attr('height', initialSize)
+                .attr('fill', 'none')
+                .attr('stroke', 'black')
+                .attr('stroke-width', 1);
+
             return {
-                square: svg
-                    .append('rect')
-                    .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
-                    .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
-                    .attr('width', initialSize)
-                    .attr('height', initialSize)
-                    .attr('fill', () => colors[i]),
+                square: filledSquare,
+                borderSquare: borderSquare,
                 scale: scale
-            };
+            }
         });
 
         const progressBar = svg.append('rect')
@@ -181,14 +193,14 @@ function updateIndex(index) {
         function animateSquares(i) {
             if (i >= dataArray[0].length) return;
 
+            let p = 0
             squares.forEach((squareObj, plotIndex) => {
-                console.log("hey")
-                console.log(squareObj)
                 const data = dataArray[plotIndex];
                 const square = squareObj.square;
                 const scale = squareObj.scale;
 
                 const newSize = scale(parseFloat(data[i].Value));
+                console.log(names[p++], newSize)
 
                 square.transition()
                     .duration(600)
