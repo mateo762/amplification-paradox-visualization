@@ -12,12 +12,20 @@
    margin: 0 auto;
  }
 
+ .part-2{
+  margin-top: 100px
+ }
+
  .compare-animation {
    display: flex;
    justify-content: center;
-    align-items: flex-end;
+   align-items: flex-end;
  }
 
+ #circles-compare {
+   width: 700px;
+   height: 600px;
+ }
 
  .radio-container {
    display: flex;
@@ -26,7 +34,7 @@
    max-width: 700px;
    /* Width of the compare-animation div */
    margin-bottom: 1rem;
-  }
+ }
 
  .radio-container label {
    font-family: Arial, sans-serif;
@@ -129,4 +137,4 @@
  .stop-button:hover {
    background-color: #c82333;
    border-color: #bd2130;
-  }
+ }
