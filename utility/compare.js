@@ -34,29 +34,34 @@ function startPart3() {
     document.querySelectorAll('input[name="position-2"]').forEach(radioButton => {
         radioButton.addEventListener('click', (event) => {
             if (event.target.value === 'Far Left') {
+                console.log("diego")
                 updateIndex(0)
             } else if (event.target.value === 'Left') {
+                console.log("diego")
                 updateIndex(1)
             } else if (event.target.value === 'Center') {
+                console.log("diego")
                 updateIndex(2)
             } else if (event.target.value === 'Right') {
+                console.log("diego")
                 updateIndex(3)
             } else if (event.target.value === 'Far Right') {
+                console.log("diego")
                 updateIndex(4)
             }
         });
     });
 
 
-    const svg = d3.select('.compare-animation-svg-2');
-    const width = parseFloat(svg.attr('width'));
-    const height = parseFloat(svg.attr('height'));
+    const svg2 = d3.select('.second-compare-animation');
+    const width = parseFloat(svg2.attr('width'));
+    const height = parseFloat(svg2.attr('height'));
 
 
     function updateIndex(index) {
-        document.querySelector(".start-button-part-3").addEventListener("click", startAnimation)
+        document.querySelector(".start-button-part-3").addEventListener("click", startAnimation2)
 
-        d3.select('.compare-animation-svg-2').html('')
+        d3.select('.second-compare-animation').html('')
 
         d3.csv("https://mateo762.github.io/data/plots.csv.txt").then((dataPlots) => {
             d3.csv("https://mateo762.github.io/data/relative_utility.csv.txt").then((dataUtility) => {
@@ -65,17 +70,17 @@ function startPart3() {
                 });
                 const plotDataRectangle = dataPlots.filter(d => d.Plot.startsWith(namePlots[index]) && d.Line === mode);
                 const utilityData = dataUtility.filter(d => d.Start === names[index])
-                animateCircles = createAnimationRectangles(plotDataCircle, utilityData);
+                animateCircles2 = createAnimationRectangles2(plotDataCircle, utilityData);
                 //animateRectangle = createRectangleCompare(plotDataRectangle);
-                animateProgress = createProgressAnimation()
+                animateProgress2 = createProgressAnimation2()
             })
         });
 
-        function startAnimation() {
+        function startAnimation2() {
             if (animateCircles && animateProgress) {
-                createProgressAnimation()
-                animateCircles(0)
-                animateProgress()
+                createProgressAnimation2()
+                animateCircles2(0)
+                animateProgress2()
             }
         }
 
@@ -135,7 +140,7 @@ function startPart3() {
         }
 
 
-        function createAnimationRectangles(dataArray, dataUtility) {
+        function createAnimationRectangles2(dataArray, dataUtility) {
 
             const maxRadius = 50;
             const squareSize = 150;
@@ -155,7 +160,7 @@ function startPart3() {
                 const initialSize = scale(parseFloat(data[0].Value));
                 const utilitySize = scale(parseFloat(relativeUtility))
 
-                const filledSquare = svg.append('rect')
+                const filledSquare = svg2.append('rect')
                     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
                     .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
                     .attr('width', initialSize)
@@ -163,7 +168,7 @@ function startPart3() {
                     .attr('fill', () => colors[i])
 
                 // Add static square border with no color inside
-                const borderSquare = svg.append('rect')
+                const borderSquare = svg2.append('rect')
                     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - utilitySize / 2)
                     .attr('y', height / 2 - 40 - utilitySize / 2)
                     .attr('width', utilitySize)
@@ -211,12 +216,13 @@ function startPart3() {
             return animateSquares
         }
 
-        function createProgressAnimation() {
+        function createProgressAnimation2() {
+            console.log("start")
             const numCircles = 20;
             const delay = DURATION; // milliseconds
 
-            // Select the SVG element and set its size
-            const svg = d3.select('.progress-2')
+            // Select the svg2 element and set its size
+            const svg2 = d3.select('.progress-2')
                 .attr('width', 700)
                 .attr('height', 100);
 
@@ -224,7 +230,7 @@ function startPart3() {
             const data = Array.from({ length: numCircles }, (_, i) => i);
 
             // Bind the data to the circle elements and set their attributes
-            const circles = svg.selectAll('circle')
+            const circles = svg2.selectAll('circle')
                 .data(data)
                 .join('circle')
                 .attr('cx', (d, i) => 50 + i * 30)
@@ -234,7 +240,7 @@ function startPart3() {
                 .style('stroke', 'black')
 
             // Bind the data to the text elements and set their attributes
-            const labels = svg.selectAll('text')
+            const labels = svg2.selectAll('text')
                 .data(data)
                 .join('text')
                 .attr('x', (d, i) => 50 + i * 30)
@@ -287,7 +293,7 @@ function startPart3() {
     //             .range([0, maxRadius]);
 
     //         return {
-    //             circle: svg.append('circle')
+    //             circle: svg2.append('circle')
     //                 .attr('cx', 50 + maxRadius + 50 + i * circleSpacing) // Add 50 to the cx attribute
     //                 .attr('cy', height / 2 - 40)
     //                 .attr('r', scale(parseFloat(data[0].Value)))
@@ -296,7 +302,7 @@ function startPart3() {
     //         };
     //     });
 
-    //     const progressBar = svg.append('rect')
+    //     const progressBar = svg2.append('rect')
     //         .attr('x', 50 + maxRadius + 50) // Add 50 to the x attribute
     //         .attr('y', height - 50)
     //         .attr('width', 0)
@@ -307,7 +313,7 @@ function startPart3() {
     //         .domain([0, 20])
     //         .range([0, width - 100 - maxRadius - maxRadius - 100]); // Adjust the range calculation
 
-    //     const progressBarBorder = svg.append('rect')
+    //     const progressBarBorder = svg2.append('rect')
     //         .attr('x', 50 + maxRadius + 50) // Same x as the progress bar
     //         .attr('y', height - 50) // Same y as the progress bar
     //         .attr('width', progressScale(20)) // Same width as the progress bar when it's fully transitioned

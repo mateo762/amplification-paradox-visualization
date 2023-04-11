@@ -48,6 +48,7 @@ function startPart2() {
                 updateIndex(3)
             } else if (event.target.value === 'Far Right') {
                 console.log("hey")
+                console.log("hey")
                 updateIndex(4)
             }
         });
@@ -60,6 +61,8 @@ function startPart2() {
 
 
     function updateIndex(index) {
+
+        console.log("here")
         document.querySelector(".start-button-part-2").addEventListener("click", startAnimation)
 
         d3.select('.compare-animation-svg').html('')
@@ -137,6 +140,11 @@ function startPart2() {
 
         function createAnimationRectangles(dataArray) {
 
+
+            const svg = d3.select('.compare-animation-svg');
+            const width = parseFloat(svg.attr('width'));
+            const height = parseFloat(svg.attr('height'));
+
             const maxRadius = 50;
             const squareSize = 150;
             const squareSpacing = 3;
@@ -211,6 +219,7 @@ function startPart2() {
         }
 
         function createProgressAnimation() {
+            console.log("creae")
             const numCircles = 20;
             const delay = DURATION; // milliseconds
 
@@ -259,6 +268,7 @@ function startPart2() {
                 });
             }
 
+            console.log("creae")
             return update
         }
 
