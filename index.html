@@ -9,168 +9,161 @@
 </head>
 
 <body>
-  <div class="container">
-    <h1>The Amplification Paradox</h1>
-    <div class="part part-1">
-      <h2>Introduction</h2>
-      <p class="text-block">In today's digital world, recommendation systems help connect users to content that matches
-        their interests on social media and other platforms. However, there's an ongoing debate about how algorithms
-        might promote extreme content and how that impacts users' content consumption. This blog post will help you
-        understand the "amplification paradox" found in recommendation systems, which highlights the contradiction
-        between algorithms exposing users to extreme content and studies showing that such content is rarely consumed,
-        and when it is, it's not mainly through algorithmic recommendations.</p>
-      <p class="text-block">Extreme content includes highly polarizing, controversial, or fringe material that goes
-        beyond mainstream norms. Exposure to this type of content can cause several negative outcomes for users and
-        society. For example, it can spread misinformation and conspiracy theories, damage trust in established
-        institutions, and create divisions among people. Moreover, promoting extreme content can lead to the
-        radicalization of individuals, pushing them towards more extreme beliefs and potentially harmful actions.</p>
-      <p class="text-block">If the YouTube algorithm exposed users to extreme content, it would not only risk increasing
-        these negative effects but also create an unhealthy online environment. Users could get stuck in echo chambers,
-        where their existing beliefs are reinforced by the content they see, leading to further polarization and
-        isolation from different perspectives.</p>
-      <p class="text-block last-text-block">In this blog post, we'll explore the amplification paradox, shedding light
-        on the potential risks of recommendation systems and their role in promoting extreme content. We'll also discuss
-        the importance of understanding user behavior and preferences when creating and evaluating these systems. To
-        help explain the topic more clearly, we'll include an animation that shows how agent-based models can help us
-        understand the paradox. Our goal is to make this complex subject a bit easier for everyone to grasp, ensuring
-        that the potential dangers of recommendation systems are recognized and handled responsibly.</p>
-      <h2>The Agent-Based Model</h2>
-      <p class="text-block">To explore the content recommended by recommendation systems, we developed an agent-based
-        model. This model, which can be interpreted as a bot, selects videos from the suggestions provided by the
-        recommender. We can configure this model to choose videos randomly or to mimic the way people pick videos. To
-        accurately represent people's behavior, we introduce the term "relative utility," which represents the
-        usefulness of each category to the user. Categories with low relative utility for a user will have a smaller
-        chance of being selected by the model.</p>
-      <p class="text-block last-text-block">In the interactive animation below, you can engage with the model and
-        observe how it selects videos from the recommendations provided by the system. You can decide whether you want
-        the model to pick videos randomly or based on utility. When set to random, all categories have an equal chance
-        of being selected, whereas when set to utility, categories have varying chances of being selected depending on
-        the user's preferences. You can see these probabilities in the bar chart below.</p>
-      <div class="radio-wrapper">
+  <div class="big-container">
+    <div class="container">
+      <h1>The Amplification Paradox</h1>
+      <div class="part part-1">
+        <h2>Introduction</h2>
+        <p class="text-block">Recommendation systems are a crucial part of today's digital world, connecting users with
+          content that aligns with their interests. However, there is an ongoing debate about the role algorithms play
+          in
+          promoting extreme content, which can have negative consequences for users and society. The "amplification
+          paradox" highlights the contradiction between the exposure to extreme content and the fact that such content
+          is
+          rarely consumed, especially not primarily through algorithmic recommendations.</p>
+        <p class="text-block last-text-block">This blog post aims to explore the amplification paradox, discuss the
+          risks
+          of recommendation systems, and emphasize the importance of understanding user behavior and preferences in
+          their
+          development and evaluation. The post will include an animation explaining how agent-based models can help
+          unravel the paradox, making the complex subject more accessible. Ultimately, this aims to ensure the potential
+          dangers of recommendation systems are acknowledged and addressed responsibly.</p>
+        <h2>The Agent-Based Model</h2>
+        <p class="text-block">To explore the content recommended by recommendation systems, we developed an agent-based
+          model. This model, which can be interpreted as a bot, selects videos from the suggestions provided by the
+          recommender. We can configure this model to choose videos randomly or to mimic the way people pick videos. To
+          accurately represent people's behavior, we introduce the term "relative utility," which represents the
+          usefulness of each category to the user. Categories with low relative utility for a user will have a smaller
+          chance of being selected by the model.</p>
+        <p class="text-block last-text-block">In the interactive animation below, you can engage with the model and
+          observe how it selects videos from the recommendations provided by the system. You can decide whether you want
+          the model to pick videos randomly or based on utility. When set to random, all categories have an equal chance
+          of being selected, whereas when set to utility, categories have varying chances of being selected depending on
+          the user's preferences. You can see these probabilities in the bar chart below.</p>
+        <div class="radio-wrapper">
+          <div class="radio-container">
+            <input type="radio" name="radio-topic" id="far-left-1" class="radio-margin" checked />
+            <label for="far-left-1">Far Left</label>
+            <input type="radio" name="radio-topic" id="left-1" class="radio-margin" />
+            <label for="left-1">Left</label>
+            <input type="radio" name="radio-topic" id="center-1" class="radio-margin" />
+            <label for="center-1">Center</label>
+            <input type="radio" name="radio-topic" id="right-1" class="radio-margin" />
+            <label for="right-1">Right</label>
+            <input type="radio" name="radio-topic" id="far-right-1" />
+            <label for="far-right-1">Far Right</label>
+          </div>
+          <div class="radio-container">
+            <input type="radio" name="radio-speed" id="slow" class="radio-margin" />
+            <label for="slow">Slow</label>
+            <input type="radio" name="radio-speed" id="medium" class="radio-margin" />
+            <label for="medium">Medium</label>
+            <input type="radio" name="radio-speed" id="fast" checked />
+            <label for="fast">Fast</label>
+          </div>
+          <div class="button r" id="button-1">
+            <input type="checkbox" class="checkbox" id="checkbox-mode" />
+            <div class="knobs"></div>
+            <div class="layer"></div>
+          </div>
+        </div>
+        <div class="margin-top">
+          <svg id="animation" width="690" height="230"></svg>
+        </div>
+        <div class="margin-top">
+          <svg id="bar"></svg>
+        </div>
+        <div class="button-container">
+          <button class="start-button start-button-part-1">Start animation</button>
+          <button class="stop-button stop-button-part-1">Stop</button>
+        </div>
+        <p class="text-block start-text-block">Now that we've examined how the model works, we will visualize how each
+          category grows or decreases when the model is interacting with the recommender system. First we will analyze
+          how
+          each category changes when the model is set to random selection, and then when it's set to selection based on
+          utility.</p>
+      </div>
+      <div class="part part-2">
+        <h2>Random Selection</h2>
+        <p class="text-block last-text-block">In this visualization, the size of each square represents the amount of
+          content selected
+          from its corresponding category by the model. The behavior of each category varies based on the political
+          orientation of the user. It's worth noting that this model configuration was previously used in studies to
+          support the notion of extreme content amplification.
+        </p>
         <div class="radio-container">
-          <input type="radio" name="radio-topic" id="far-left-1" class="radio-margin" checked />
-          <label for="far-left-1">Far Left</label>
-          <input type="radio" name="radio-topic" id="left-1" class="radio-margin" />
-          <label for="left-1">Left</label>
-          <input type="radio" name="radio-topic" id="center-1" class="radio-margin" />
-          <label for="center-1">Center</label>
-          <input type="radio" name="radio-topic" id="right-1" class="radio-margin" />
-          <label for="right-1">Right</label>
-          <input type="radio" name="radio-topic" id="far-right-1" />
-          <label for="far-right-1">Far Right</label>
+          <input type="radio" id="center-2" name="position-1" value="Center">
+          <label for="center-2">Center</label>
+
+          <input type="radio" id="right-2" name="position-1" value="Right">
+          <label for="right-2">Right</label>
+
+          <input type="radio" id="far-right-2" name="position-1" value="Far Right" checked>
+          <label for="far-right-2">Far Right</label>
         </div>
+        <div class="compare-animation">
+          <div id="circles-compare">
+            <svg class="compare-animation-svg" width="700" height="300">
+              <rect class="rect-1"></rect>
+              <rect class="rect-2"></rect>
+              <rect class="rect-3"></rect>
+              <rect class="rect-4"></rect>
+              <rect class="rect-5"></rect>
+              <rect class="rect-border-1"></rect>
+              <rect class="rect-border-2"></rect>
+              <rect class="rect-border-3"></rect>
+              <rect class="rect-border-4"></rect>
+              <rect class="rect-border-5"></rect>
+            </svg>
+            <svg class="progress"></svg>
+          </div>
+        </div>
+        <div class="button-container">
+          <button class="start-button start-button-part-2">Start animation</button>
+        </div>
+      </div>
+      <div class="part part-3">
+        <h2>Utility Selection</h2>
+        <p class="text-block last-text-block">We've observed how recommender systems tend to amplify extreme content
+          through random selection. But, let's be real, that's not how people actually choose videos. When you're
+          browsing
+          YouTube, you don't just click on random videos, do you? You typically go for the ones that catch your
+          interest.
+          That's what this configuration aims to mimic. We figure out the value of each category for a user, and then
+          the
+          model picks a video based on the combined utilities we've calculated.</p>
         <div class="radio-container">
-          <input type="radio" name="radio-speed" id="slow" class="radio-margin" />
-          <label for="slow">Slow</label>
-          <input type="radio" name="radio-speed" id="medium" class="radio-margin" />
-          <label for="medium">Medium</label>
-          <input type="radio" name="radio-speed" id="fast" checked />
-          <label for="fast">Fast</label>
+          <input type="radio" id="center-3" name="position-2" value="Center">
+          <label for="center-3">Center</label>
+
+          <input type="radio" id="right-3" name="position-2" value="Right">
+          <label for="right-3">Right</label>
+
+          <input type="radio" id="far-right-3" name="position-2" value="Far Right" checked>
+          <label for="far-right-3">Far Right</label>
         </div>
-        <div class="button r" id="button-1">
-          <input type="checkbox" class="checkbox" id="checkbox-mode" />
-          <div class="knobs"></div>
-          <div class="layer"></div>
+        <div class="compare-animation-2">
+          <div id="circles-compare-2">
+            <svg class="second-compare-animation" width="700" height="300">
+              <rect class="rect-utility-1"></rect>
+              <rect class="rect-utility-2"></rect>
+              <rect class="rect-utility-3"></rect>
+              <rect class="rect-utility-4"></rect>
+              <rect class="rect-utility-5"></rect>
+              <rect class="rect-utility-border-1"></rect>
+              <rect class="rect-utility-border-2"></rect>
+              <rect class="rect-utility-border-3"></rect>
+              <rect class="rect-utility-border-4"></rect>
+              <rect class="rect-utility-border-5"></rect>
+            </svg>
+            <svg class="progress-2"></svg>
+          </div>
         </div>
-      </div>
-      <div class="margin-top">
-        <svg id="animation" width="690" height="230"></svg>
-      </div>
-      <div class="margin-top">
-        <svg id="bar"></svg>
-      </div>
-      <div class="button-container">
-        <button class="start-button start-button-part-1">Start animation</button>
-        <button class="stop-button stop-button-part-1">Stop</button>
-      </div>
-      <p class="text-block start-text-block">Now that we've examined how the model works, we will visualize how each
-        category grows or decreases when the model is interacting with the recommender system. First we will analyze how
-        each category changes when the model is set to random selection, and then when it's set to selection based on
-        utility.</p>
-    </div>
-    <div class="part part-2">
-      <h2>Random Selection</h2>
-      <div class="radio-container">
-        <input type="radio" id="far-left-2" name="position-1" value="Far Left">
-        <label for="far-left-2">Far Left</label>
-
-        <input type="radio" id="left-2" name="position-1" value="Left">
-        <label for="left-2">Left</label>
-
-        <input type="radio" id="center-2" name="position-1" value="Center">
-        <label for="center-2">Center</label>
-
-        <input type="radio" id="right-2" name="position-1" value="Right">
-        <label for="right-2">Right</label>
-
-        <input type="radio" id="far-right-2" name="position-1" value="Far Right" checked>
-        <label for="far-right-2">Far Right</label>
-      </div>
-      <div class="compare-animation">
-        <div id="circles-compare">
-          <svg class="compare-animation-svg" width="700" height="300">
-            <rect class="rect-1"></rect>
-            <rect class="rect-2"></rect>
-            <rect class="rect-3"></rect>
-            <rect class="rect-4"></rect>
-            <rect class="rect-5"></rect>
-            <rect class="rect-border-1"></rect>
-            <rect class="rect-border-2"></rect>
-            <rect class="rect-border-3"></rect>
-            <rect class="rect-border-4"></rect>
-            <rect class="rect-border-5"></rect>
-          </svg>
-          <svg class="progress"></svg>
+        <div class="button-container">
+          <button class="start-button start-button-part-3">Start animation</button>
         </div>
-      </div>
-      <div class="button-container">
-        <button class="start-button start-button-part-2">Start animation</button>
       </div>
     </div>
-    <div class="part part-3">
-      <h2>Introduction</h2>
-      <p class="text-block">In AAAtoday's world of social media and content platforms, recommender systems play a vital
-        role in connecting users to content that matches their interests. However, there is an ongoing debate on the
-        role of algorithms in promoting extreme content and the impact on users' consumption patterns. This blog post
-        aims to provide an accessible understanding of the "amplification paradox" found in recommender systems</p>
-      <div class="radio-container">
-        <input type="radio" id="far-left-3" name="position-2" value="Far Left">
-        <label for="far-left-3">Far Left</label>
-
-        <input type="radio" id="left-3" name="position-2" value="Left">
-        <label for="left-3">Left</label>
-
-        <input type="radio" id="center-3" name="position-2" value="Center">
-        <label for="center-3">Center</label>
-
-        <input type="radio" id="right-3" name="position-2" value="Right">
-        <label for="right-3">Right</label>
-
-        <input type="radio" id="far-right-3" name="position-2" value="Far Right" checked>
-        <label for="far-right-3">Far Right</label>
-      </div>
-      <div class="compare-animation-2">
-        <div id="circles-compare-2">
-          <svg class="second-compare-animation" width="700" height="300">
-            <rect class="rect-utility-1"></rect>
-            <rect class="rect-utility-2"></rect>
-            <rect class="rect-utility-3"></rect>
-            <rect class="rect-utility-4"></rect>
-            <rect class="rect-utility-5"></rect>
-            <rect class="rect-utility-border-1"></rect>
-            <rect class="rect-utility-border-2"></rect>
-            <rect class="rect-utility-border-3"></rect>
-            <rect class="rect-utility-border-4"></rect>
-            <rect class="rect-utility-border-5"></rect>
-          </svg>
-          <svg class="progress-2"></svg>
-        </div>
-      </div>
-      <div class="button-container">
-        <button class="start-button start-button-part-3">Start animation</button>
-      </div>
-    </div>
-  </div>
   </div>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js'></script>
   <script src="script.js"></script>
