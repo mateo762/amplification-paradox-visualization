@@ -31,24 +31,19 @@ function startPart2() {
 
     const DURATION = 400
 
+    let startButton = document.querySelector('.start-button-part-2')
 
     document.querySelectorAll('input[name="position-1"]').forEach(radioButton => {
         radioButton.addEventListener('click', (event) => {
             if (event.target.value === 'Far Left') {
-                console.log("hey")
                 updateIndex(0)
             } else if (event.target.value === 'Left') {
-                console.log("hey")
                 updateIndex(1)
             } else if (event.target.value === 'Center') {
-                console.log("hey")
                 updateIndex(2)
             } else if (event.target.value === 'Right') {
-                console.log("hey")
                 updateIndex(3)
             } else if (event.target.value === 'Far Right') {
-                console.log("hey")
-                console.log("hey")
                 updateIndex(4)
             }
         });
@@ -62,10 +57,8 @@ function startPart2() {
 
     function updateIndex(index) {
 
-        console.log("here")
-        document.querySelector(".start-button-part-2").addEventListener("click", startAnimation)
+        startButton.addEventListener("click", startAnimation)
 
-        d3.select('.compare-animation-svg').html('')
 
         d3.csv("https://mateo762.github.io/data/plots.csv.txt").then((data) => {
             const plotDataCircle = plots[index].map(plotName => {
@@ -79,6 +72,7 @@ function startPart2() {
 
         function startAnimation() {
             if (animateCircles && animateProgress) {
+                setStartButtonDisabled(true)
                 createProgressAnimation()
                 animateCircles(0)
                 animateProgress()
@@ -152,8 +146,17 @@ function startPart2() {
             const totalWidth = dataArray.length * squareSize + (dataArray.length - 1) * squareSpacing;
             const xOffset = (width - totalWidth) / 2; // Calculate the xOffset to center the squares
 
+            // const exaggerationFactor = 0.5;
+
+            // const scale = (value) => {
+            //     const normalizedValue = (value - 0) / (1 - 0);
+            //     const exaggeratedValue = Math.pow(normalizedValue, 1 / exaggerationFactor);
+            //     const scaledValue = 10 + (squareSize - 10) * exaggeratedValue;
+            //     return scaledValue;
+            // };
+
             const scale = d3.scalePow()
-                .exponent(0.3)
+                .exponent(0.5)
                 .domain([0, 1])
                 .range([10, squareSize])
 
@@ -161,23 +164,28 @@ function startPart2() {
             const squares = dataArray.map((data, i) => {
                 const initialSize = scale(parseFloat(data[0].Value));
 
-                const filledSquare = svg
-                    .append('rect')
+                const filledSquare = `.rect-${i + 1}`
+                const borderSquare = `rect-border-${i + 1}`
+
+                d3.select(`.rect-${i + 1}`)
+                    .transition()
+                    .duration(400)
                     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
                     .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
                     .attr('width', initialSize)
                     .attr('height', initialSize)
                     .attr('fill', () => colors[i])
 
-                const borderSquare = svg
-                    .append('rect')
+                d3.select(`.rect-border-${i + 1}`)
+                    .transition()
+                    .duration(400)
                     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
                     .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
                     .attr('width', initialSize)
                     .attr('height', initialSize)
                     .attr('fill', 'none')
                     .attr('stroke', 'black')
-                    .attr('stroke-width', 1);
+                    .attr('stroke-width', 1)
 
                 return {
                     square: filledSquare,
@@ -193,10 +201,11 @@ function startPart2() {
                 let p = 0
                 squares.forEach((squareObj, plotIndex) => {
                     const data = dataArray[plotIndex];
-                    const square = squareObj.square;
+                    const square = d3.select(squareObj.square);
                     const scale = squareObj.scale;
 
                     const newSize = scale(parseFloat(data[i].Value));
+
 
                     square.transition()
                         .duration(DURATION)
@@ -211,6 +220,10 @@ function startPart2() {
                         });
                 });
 
+                if(i==19){
+                    setStartButtonDisabled(false)
+                }
+
                 setTimeout(() => animateCircles(i + 1), DURATION);
             }
 
@@ -219,7 +232,6 @@ function startPart2() {
         }
 
         function createProgressAnimation() {
-            console.log("creae")
             const numCircles = 20;
             const delay = DURATION; // milliseconds
 
@@ -268,7 +280,6 @@ function startPart2() {
                 });
             }
 
-            console.log("creae")
             return update
         }
 
@@ -340,6 +351,7 @@ function startPart2() {
                         .attr('width', progressScale(20));
                 }
 
+
                 setTimeout(() => animateCircles(i + 1), DURATION);
             }
 
@@ -350,6 +362,16 @@ function startPart2() {
     }
 
     updateIndex(4)
+
+
+    function setStartButtonDisabled(isDisabled){
+        startButton.disabled = isDisabled
+        if (isDisabled) {
+            startButton.classList.add("disabled")
+        } else {
+            startButton.classList.remove("disabled")
+        }
+    }
 }
 
 startPart2()

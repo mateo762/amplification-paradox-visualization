@@ -4,28 +4,63 @@ body {
   color: #333;
 }
 
-g{
+g {
   margin: auto;
 }
 
 .circle-1 {
-  fill:#1919e6
+  fill: #1919e6
 }
 
-.circle-2{
+.circle-2 {
   fill: #6060b1
 }
 
-.circle-3{
+.circle-3 {
   fill: #808080
 }
 
-.circle-4{
+.circle-4 {
   fill: #b34d4d
 }
 
-.circle-5{
+.circle-5 {
   fill: #e61919
+}
+
+.text-block {
+  font-size: 18px; /* Adjust the font size to your preference */
+  font-weight: normal;
+  color: #333;
+  text-align: justify;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.start-text-block{
+  margin-top: 70px
+}
+
+.last-text-block{
+  margin-bottom: 100px
+}
+
+h1 {
+  font-size: 36px; /* Adjust the font size to your preference */
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+h2 {
+  font-size: 28px; /* Adjust the font size to your preference */
+  font-weight: bold;
+  align-self: flex-start;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .container {
@@ -33,29 +68,35 @@ g{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 700px;
+  margin: 0 auto;
 }
 
-.part{
+.part {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 30px
+  margin-top: 30px;
+  text-align: left;
 }
 
-.part-2, .part-3{
+.part-2,
+.part-3 {
   margin-top: 200px
 }
 
- .compare-animation, .compare-animation-2 {
-   display: flex;
-   justify-content: center;
-   align-items: flex-end;
- }
+.compare-animation,
+.compare-animation-2 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
 
- #circles-compare, #circles-compare-2 {
-   width: 700px;
-   height: 400px;
- }
+#circles-compare,
+#circles-compare-2 {
+  width: 700px;
+  height: 400px;
+}
 
 
 
@@ -124,26 +165,26 @@ g{
 }
 
 /* Rule for the selected radio button label */
-.radio-container input[type="radio"]:checked + label {
+.radio-container input[type="radio"]:checked+label {
   background-color: #007bff;
   border-color: #007bff;
   color: #ffffff;
 }
 
 /* Add a new rule to style the custom radio button indicator when it's checked */
-.radio-container input[type="radio"]:checked + label span {
+.radio-container input[type="radio"]:checked+label span {
   background-color: #ffffff;
   border-color: #ffffff;
 }
 
 /* Update the existing rule for the hover effect on the selected radio button label */
-.radio-container input[type="radio"]:checked + label:hover {
+.radio-container input[type="radio"]:checked+label:hover {
   background-color: #0056b3;
   border-color: #0056b3;
 }
 
 /* Add a new rule to style the custom radio button indicator when its label is hovered */
-.radio-container input[type="radio"]:checked + label:hover span {
+.radio-container input[type="radio"]:checked+label:hover span {
   background-color: #ffffff;
   border-color: #ffffff;
 }
@@ -192,14 +233,16 @@ g{
 /* Add new styles for the axis labels */
 .axis text {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 14px; /* Increase the font size */
+  font-size: 14px;
+  /* Increase the font size */
   fill: #333;
 }
 
 .axis line,
 .axis path {
   stroke: #333;
-  stroke-opacity: 0.5; /* Lower the opacity of the lines */
+  stroke-opacity: 0.5;
+  /* Lower the opacity of the lines */
 }
 
 .axis .tick line {
@@ -302,13 +345,13 @@ g{
   transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
 }
 
-#button-1 .checkbox:checked + .knobs:before {
+#button-1 .checkbox:checked+.knobs:before {
   content: "RANDOM";
   left: 42px;
   background-color: #f44336;
 }
 
-#button-1 .checkbox:checked ~ .layer {
+#button-1 .checkbox:checked~.layer {
   background-color: #fcebeb;
 }
 

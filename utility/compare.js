@@ -31,22 +31,19 @@ function startPart3() {
 
     const DURATION = 400
 
+    let startButton2 = document.querySelector('.start-button-part-3')
+
     document.querySelectorAll('input[name="position-2"]').forEach(radioButton => {
         radioButton.addEventListener('click', (event) => {
             if (event.target.value === 'Far Left') {
-                console.log("diego")
                 updateIndex(0)
             } else if (event.target.value === 'Left') {
-                console.log("diego")
                 updateIndex(1)
             } else if (event.target.value === 'Center') {
-                console.log("diego")
                 updateIndex(2)
             } else if (event.target.value === 'Right') {
-                console.log("diego")
                 updateIndex(3)
             } else if (event.target.value === 'Far Right') {
-                console.log("diego")
                 updateIndex(4)
             }
         });
@@ -59,9 +56,8 @@ function startPart3() {
 
 
     function updateIndex(index) {
-        document.querySelector(".start-button-part-3").addEventListener("click", startAnimation2)
+        startButton2.addEventListener("click", startAnimation2)
 
-        d3.select('.second-compare-animation').html('')
 
         d3.csv("https://mateo762.github.io/data/plots.csv.txt").then((dataPlots) => {
             d3.csv("https://mateo762.github.io/data/relative_utility.csv.txt").then((dataUtility) => {
@@ -78,6 +74,7 @@ function startPart3() {
 
         function startAnimation2() {
             if (animateCircles && animateProgress) {
+                setStartButtonDisabled2(true)
                 createProgressAnimation2()
                 animateCircles2(0)
                 animateProgress2()
@@ -122,10 +119,8 @@ function startPart3() {
                 .duration(transitionDuration)
                 .style('height', d => `${scale(d)}px`);
 
-            console.log("length: ", L.length)
             function update(iteration) {
                 const currentValues = [L[iteration], CL[iteration], C[iteration], CR[iteration], R[iteration]];
-                console.log(currentValues)
                 segments.data(currentValues)
                     .transition()
                     .duration(transitionDuration)
@@ -160,7 +155,12 @@ function startPart3() {
                 const initialSize = scale(parseFloat(data[0].Value));
                 const utilitySize = scale(parseFloat(relativeUtility))
 
-                const filledSquare = svg2.append('rect')
+                const filledSquare = `.rect-utility-${i + 1}`
+                const borderSquareUtility = `.rect-utility-border-${i + 1}`
+
+                d3.select(filledSquare)
+                    .transition()
+                    .duration(400)
                     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2) // Update 'x' attribute
                     .attr('y', height / 2 - 40 - initialSize / 2) // Update 'y' attribute
                     .attr('width', initialSize)
@@ -168,7 +168,9 @@ function startPart3() {
                     .attr('fill', () => colors[i])
 
                 // Add static square border with no color inside
-                const borderSquare = svg2.append('rect')
+                d3.select(borderSquareUtility)
+                    .transition()
+                    .duration(400)
                     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - utilitySize / 2)
                     .attr('y', height / 2 - 40 - utilitySize / 2)
                     .attr('width', utilitySize)
@@ -177,9 +179,20 @@ function startPart3() {
                     .attr('stroke', 'black')
                     .attr('stroke-width', 1);
 
+                // Add static square border with no color inside
+                // const borderSquareInitial = svg2.append('rect')
+                //     .attr('x', xOffset + 50 + i * (squareSize + squareSpacing) - initialSize / 2)
+                //     .attr('y', height / 2 - 40 - initialSize / 2)
+                //     .attr('width', initialSize)
+                //     .attr('height', initialSize)
+                //     .attr('fill', 'none')
+                //     .attr('stroke', 'black')
+                //     .attr('stroke-width', 1);
+
+
                 return {
                     square: filledSquare,
-                    borderSquare: borderSquare,
+                    borderSquareUtility: borderSquareUtility,
                     scale: scale
                 };
             });
@@ -189,8 +202,9 @@ function startPart3() {
                 if (i >= dataArray[0].length) return;
 
                 squares.forEach((squareObj, plotIndex) => {
+                    console.log(squareObj, plotIndex)
                     const data = dataArray[plotIndex];
-                    const square = squareObj.square;
+                    const square = d3.select(squareObj.square);
                     const scale = squareObj.scale;
 
                     const newSize = scale(parseFloat(data[i].Value));
@@ -208,7 +222,9 @@ function startPart3() {
                         });
                 });
 
-
+                if(i==19){
+                    setStartButtonDisabled2(false)
+                }
                 setTimeout(() => animateCircles(i + 1), DURATION);
             }
 
@@ -217,7 +233,6 @@ function startPart3() {
         }
 
         function createProgressAnimation2() {
-            console.log("start")
             const numCircles = 20;
             const delay = DURATION; // milliseconds
 
@@ -354,6 +369,16 @@ function startPart3() {
     //     //animateCircles(0, 0);
     //     return animateCircles
     // }
+
+
+    function setStartButtonDisabled2(isDisabled) {
+        startButton2.disabled = isDisabled
+        if (isDisabled) {
+            startButton2.classList.add("disabled")
+        } else {
+            startButton2.classList.remove("disabled")
+        }
+    }
 }
 
 startPart3()
