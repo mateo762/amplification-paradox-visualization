@@ -155,8 +155,8 @@ function startPart2() {
             //     return scaledValue;
             // };
 
-            const scale = d3.scalePow()
-                .exponent(0.5)
+            const scale = d3.scaleSqrt()
+                .exponent(0.9)
                 .domain([0, 1])
                 .range([10, squareSize])
 
