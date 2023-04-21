@@ -14,16 +14,16 @@
         <div class="container">
             <div class="part part-1">
                 <div class="radio-container">
-                    <input type="radio" id="center-2" name="position-1" value="Center">
-                    <label for="center-2">Center</label>
+                    <input type="radio" id="center-random" name="position-random" value="Center">
+                    <label for="center-random">Center</label>
 
-                    <input type="radio" id="right-2" name="position-1" value="Right">
-                    <label for="right-2">Right</label>
+                    <input type="radio" id="right-random" name="position-random" value="Right">
+                    <label for="right-random">Right</label>
 
-                    <input type="radio" id="far-right-2" name="position-1" value="Far Right" checked>
-                    <label for="far-right-2">Far Right</label>
+                    <input type="radio" id="far-right-random" name="position-random" value="Far Right" checked>
+                    <label for="far-right-random">Far Right</label>
                 </div>
-                <svg>
+                <svg class="random-svg">
                     <rect class="random-bar-0"></rect>
                     <rect class="random-bar-1"></rect>
                     <rect class="random-bar-2"></rect>
@@ -60,7 +60,7 @@
                     <input type="radio" id="far-right-utility" name="position-utility" value="Far Right" checked>
                     <label for="far-right-utility">Far Right</label>
                 </div>
-                <svg>
+                <svg class="utility-svg">
                     <rect class="utility-bar-0"></rect>
                     <rect class="utility-bar-1"></rect>
                     <rect class="utility-bar-2"></rect>
@@ -94,6 +94,7 @@
         </div>
     </div>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="random2.js"></script>
     <script src="random.js"></script>
 </body>
 </html>
