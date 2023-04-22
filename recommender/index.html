@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Filtering Visualization</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        svg {
+            font-family: "Arial", sans-serif;
+        }
+
+        .cell {
+            stroke: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // Data - initialize the user-item matrix data
+        const numRows = 10;
+        const numCols = 10;
+        const data = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
+
+        // Dimensions
+        const cellSize = 20;
+        const width = cellSize * numCols;
+        const height = cellSize * numRows;
+
+        // Color scale
+        const colorScale = d3.scaleOrdinal([0, 1], ["#eee", "#2c7bb6"]);
+
+        // Create SVG
+        const svg = d3.select("body")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        // Draw heatmap
+        const cells = svg.selectAll(".cell")
+            .data(data.flat())
+            .join("rect")
+            .attr("class", "cell")
+            .attr("x", (d, i) => (i % numCols) * cellSize)
+            .attr("y", (d, i) => Math.floor(i / numCols) * cellSize)
+            .attr("width", cellSize)
+            .attr("height", cellSize)
+            .attr("fill", d => colorScale(d));
+
+        // Animation function
+        function animate(userInteractions) {
+            // Iterate through user interactions
+            userInteractions.forEach(({ user, items }) => {
+                items.forEach((item) => {
+                    // Update cell in the data matrix
+                    data[user][item] = 1;
+
+                    // Update heatmap
+                    cells.data(data.flat())
+                        .attr("fill", d => colorScale(d));
+                });
+            });
+
+            // Schedule next update
+            setTimeout(() => {
+                const newUserInteractions = generateUserInteractions();
+                animate(newUserInteractions);
+            }, 500); // Adjust delay as needed
+        }
+
+        // Generate user interactions
+        function generateUserInteractions() {
+            const userInteractions = [];
+
+            for (let user = 0; user < numRows; user++) {
+                const availableItems = data[user].map((val, idx) => val === 0 ? idx : -1).filter(val => val !== -1);
+                const numInteractions = Math.min(4, availableItems.length);
+                const items = [];
+
+                for (let i = 0; i < numInteractions; i++) {
+                    const randIndex = Math.floor(Math.random() * availableItems.length);
+                    const randItem = availableItems.splice(randIndex, 1)[0];
+                    items.push(randItem);
+                }
+
+                userInteractions.push({ user, items });
+            }
+
+            return userInteractions;
+        }
+
+        // Start animation
+        const initialUserInteractions = generateUserInteractions();
+        animate(initialUserInteractions);
+    </script>
+</body>
+
+</html>
