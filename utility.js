@@ -39,8 +39,8 @@ function startUtility() {
     const svgHeight = 500
 
 
-    const width = 70
-    const separationBar = 157
+    const width = 90
+    const separationBar = 152
 
 
     const scaleFactor = 1e3
@@ -163,8 +163,8 @@ function startUtility() {
                     .attr('stroke-width', 1);
 
                 // Create a small rectangle in the middle of the horizontal line
-                const rectWidth = 40;
-                const rectHeight = 20;
+                const rectWidth = 60;
+                const rectHeight = 30;
                 d3.select(`.utility-rect-${index}`)
                     .attr('x', ((width - rectWidth) / 2) + posX)
                     .attr('y', groundPosition - rectHeight / 2)
@@ -180,7 +180,7 @@ function startUtility() {
                     .attr('x', (width / 2) + posX)
                     .attr('y', groundPosition + 5) // Adjust the vertical position to center the text within the rectangle
                     .attr('text-anchor', 'middle')
-                    .attr('font-size', '12px')
+                    .attr('font-size', '18px')
                     .text(((firstValue - 1) / scaleFactor * 100).toFixed(2))
                     .attr('fill', 'black')
                     .transition()
@@ -216,6 +216,8 @@ function startUtility() {
                     //     percentageChange = -percentageChange;
                     // }
 
+                    percentageChange = originalLastValue - originalFirstValue
+
                     console.log(originalFirstValue, originalLastValue, parseFloat(percentageChange.toFixed(2)))
                     const posX = index * separationBar
 
@@ -232,7 +234,10 @@ function startUtility() {
                     function updateHeight() {
                         if (i < testValues.length) {
                             const previousValue = i === 0 ? 0 : testValues[i - 1];
-                            const currentValue = testValues[i];
+                            let currentValue = testValues[i];
+                            if((index == 4 && orientation == 2) /*|| (index == 1 && orientation == 4)*/){
+                                currentValue = 0
+                            }
                             const isCrossingZero = (previousValue < 0 && currentValue >= 0) || (previousValue >= 0 && currentValue < 0);
 
                             // Calculate the new height based on the testValues array
@@ -263,10 +268,10 @@ function startUtility() {
                             if (i == testValues.length - 1) {
                                 // Create a text element with an initial opacity of 0
                                 const percentageText = svg.append('text')
-                                    .attr('x', (width / 2) + posX - 5)
+                                    .attr('x', (width / 2) + posX)
                                     .attr('y', groundPosition + 100) // Set the vertical position for the percentage change text
                                     .attr('text-anchor', 'middle')
-                                    .attr('font-size', '12px')
+                                    .attr('font-size', '18px')
                                     .attr('fill', percentageChange > 0 ? 'green' : 'red') // Set the color based on the percentage change
                                     .attr('opacity', 0)
                                     .text((percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%') // Add the correct sign based on the percentage change
@@ -325,7 +330,7 @@ function startUtility() {
         return parseData
     }
 
-    updateOrientation(4)
+    updateOrientation(2)
 }
 
 startUtility()

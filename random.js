@@ -39,8 +39,8 @@ function startRandom() {
     const svgHeight = 500
 
 
-    const width = 70
-    const separationBar = 157
+    const width = 90
+    const separationBar = 152
 
 
     const scaleFactor = 1e3
@@ -48,7 +48,7 @@ function startRandom() {
 
 
     const referencePoint = svgHeight / 2;
-    const groundPosition = 3 * svgHeight / 4;
+    const groundPosition = 2 * svgHeight / 4;
     const exaggeratedReference = exaggerationFactor / 2;
 
 
@@ -121,8 +121,8 @@ function startRandom() {
                     .attr('stroke-width', 1);
 
                 // Create a small rectangle in the middle of the horizontal line
-                const rectWidth = 40;
-                const rectHeight = 20;
+                const rectWidth = 60;
+                const rectHeight = 30;
                 d3.select(`.random-rect-${index}`)
                     .attr('x', ((width - rectWidth) / 2) + posX)
                     .attr('y', groundPosition - rectHeight / 2)
@@ -138,7 +138,7 @@ function startRandom() {
                     .attr('x', (width / 2) + posX)
                     .attr('y', groundPosition + 5) // Adjust the vertical position to center the text within the rectangle
                     .attr('text-anchor', 'middle')
-                    .attr('font-size', '12px')
+                    .attr('font-size', '18px')
                     .text(((firstValue - 1) / scaleFactor * 100).toFixed(2))
                     .attr('fill', 'black')
                     .transition()
@@ -173,6 +173,8 @@ function startRandom() {
                     // if (percentageChange < 0) {
                     //     percentageChange = -percentageChange;
                     // }
+
+                    percentageChange = originalLastValue - originalFirstValue
 
                     console.log(originalFirstValue, originalLastValue, parseFloat(percentageChange.toFixed(2)))
                     const posX = index * separationBar
@@ -221,10 +223,10 @@ function startRandom() {
                             if (i == testValues.length - 1) {
                                 // Create a text element with an initial opacity of 0
                                 const percentageText = svg.append('text')
-                                    .attr('x', (width / 2) + posX - 5)
+                                    .attr('x', (width / 2) + posX)
                                     .attr('y', groundPosition + 100) // Set the vertical position for the percentage change text
                                     .attr('text-anchor', 'middle')
-                                    .attr('font-size', '12px')
+                                    .attr('font-size', '18px')
                                     .attr('fill', percentageChange > 0 ? 'green' : 'red') // Set the color based on the percentage change
                                     .attr('opacity', 0)
                                     .text((percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%') // Add the correct sign based on the percentage change
@@ -276,7 +278,7 @@ function startRandom() {
 
         return parseData
     }
-    updateOrientation(4)
+    updateOrientation(2)
 }
 
 startRandom()
