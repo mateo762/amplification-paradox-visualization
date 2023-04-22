@@ -131,12 +131,14 @@ function startPart1A() {
 			console.log(circleData)
 			d3.selectAll(".circles-group").remove()
 
-			const iterationDuration = [2000, 1500, 1000]
-			const betweenIterationDuration = [2700, 2000, 1500]
+			const iterationDuration = [1000, 700, 500]
+			const betweenIterationDuration = [2700, 2000, 1200]
 
-			const circlesAppearDuration = [1500, 900, 600]
+			const circlesAppearDuration = [600, 400, 300]
 			const circlesAppearDelay = [40, 35, 25]
-			const circlesRemoveDuration = [1500, 900, 600]
+			const circlesRemoveDuration = [600, 400, 300]
+
+			const waitUntilStart = [600, 400, 200]
 
 
 			const iterations = circleData.length
@@ -152,6 +154,10 @@ function startPart1A() {
 					.data(circleData[iteration].circles)
 					.enter()
 					.append("circle")
+					.attr("cx", function (d, i) {
+						return ((width - circleLastCx) - circleRadius) / 2 + circleRadius + (circlesSeparation * i)
+					})
+					.attr("cy", 40)
 					.attr("id", function (d, i) {
 						if (i == circleData[iteration].selected) {
 							countTopics[d.value - 1]++
@@ -163,20 +169,17 @@ function startPart1A() {
 					.transition()
 					.duration(circlesAppearDuration[speed])
 					.delay(function (_d, i) {
-						return (numCircles - i) * circlesAppearDelay[speed]
+						return 0 //(numCircles - i) * circlesAppearDelay[speed]
 					})
 					.attr("class", function (d) {
 						return "circle-" + d.value
 					})
-					.attr("cx", function (d, i) {
-						return ((width - circleLastCx) - circleRadius) / 2 + circleRadius + (circlesSeparation * i)
-					})
-					.attr("cy", 40)
 					.attr("r", circleRadius)
 			}
 
 			function update() {
-				d3.select("#selected")
+
+				setTimeout(() => {d3.select("#selected")
 					.transition()
 					.duration(circlesRemoveDuration[speed])
 					.attr("r", 10)
@@ -193,15 +196,17 @@ function startPart1A() {
 						return (height - d.radius) - position * 2 * d.radius
 					})
 					.attr('id', "inside")
+				}, waitUntilStart[speed])
 
 				// Add a filter to select only the non-selected circles
 				const nonSelectedCircles = circleGroup.selectAll("circle")
 					.filter(function (d) {
 						return d3.select(this).attr("id") == "non-selected";
 					})
+					.attr('opacity', 1)
 					.transition()
 					.duration(circlesRemoveDuration[speed])
-					.attr('cx', 1000)
+					.attr('opacity', 0)
 
 				// Remove the non-selected circles
 				nonSelectedCircles.remove();
