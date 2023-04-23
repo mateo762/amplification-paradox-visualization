@@ -7,17 +7,18 @@
     <title>Collaborative Filtering Visualization</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <style>
-        svg {
-            font-family: "Arial", sans-serif;
-        }
-
-        .cell {
+        .cell{
             stroke: #ccc;
         }
     </style>
+
 </head>
 
 <body>
+    <div>
+        <svg class="recommender-matrix"></svg>
+        <button class="start-button start-button-recommender">hola</button>
+    </div>
     <script>
         // Data - initialize the user-item matrix data
         const numRows = 10;
@@ -25,75 +26,121 @@
         const data = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
 
         // Dimensions
-        const cellSize = 20;
+        const cellSize = 60;
         const width = cellSize * numCols;
         const height = cellSize * numRows;
+        const margin = { top: 80, right: 20, bottom: 20, left: 80 };
 
         // Color scale
         const colorScale = d3.scaleOrdinal([0, 1], ["#eee", "#2c7bb6"]);
 
         // Create SVG
-        const svg = d3.select("body")
-            .append("svg")
-            .attr("width", width)
-            .attr("height", height);
+        const svg = d3.select(".recommender-matrix")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom);
 
         // Draw heatmap
         const cells = svg.selectAll(".cell")
             .data(data.flat())
             .join("rect")
             .attr("class", "cell")
-            .attr("x", (d, i) => (i % numCols) * cellSize)
-            .attr("y", (d, i) => Math.floor(i / numCols) * cellSize)
+            .attr("x", (d, i) => margin.left + (i % numCols) * cellSize)
+            .attr("y", (d, i) => margin.top + Math.floor(i / numCols) * cellSize)
             .attr("width", cellSize)
             .attr("height", cellSize)
             .attr("fill", d => colorScale(d));
 
+        // Add labels
+        svg.append("text")
+            .attr("x", margin.left / 2)
+            .attr("y", (height + margin.top) / 2)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .attr('font-size', '40px')
+            .attr("transform", `rotate(-90, ${margin.left / 2}, ${(height + margin.top) / 2})`)
+            .text("Users");
+
+           svg.append("text")
+            .attr("x", (width / 2) + margin.left)
+            .attr("y", margin.top / 2)
+            .attr("text-anchor", "middle")
+            .attr('font-size', '40px')
+            .attr("alignment-baseline", "middle")
+            .text("Items");
+
+
+        let interactionCounter = 0;
+        const interactionsPerUser = 4;
+        const totalInteractions = numRows * interactionsPerUser;
+
+        const users = Array.from({ length: numRows }, (_, i) => i);
+        let shuffledUsers = shuffle(users.slice());
+
         // Animation function
-        function animate(userInteractions) {
-            // Iterate through user interactions
-            userInteractions.forEach(({ user, items }) => {
-                items.forEach((item) => {
-                    // Update cell in the data matrix
-                    data[user][item] = 1;
-
-                    // Update heatmap
-                    cells.data(data.flat())
-                        .attr("fill", d => colorScale(d));
-                });
-            });
-
-            // Schedule next update
-            setTimeout(() => {
-                const newUserInteractions = generateUserInteractions();
-                animate(newUserInteractions);
-            }, 500); // Adjust delay as needed
-        }
-
-        // Generate user interactions
-        function generateUserInteractions() {
-            const userInteractions = [];
-
-            for (let user = 0; user < numRows; user++) {
-                const availableItems = data[user].map((val, idx) => val === 0 ? idx : -1).filter(val => val !== -1);
-                const numInteractions = Math.min(4, availableItems.length);
-                const items = [];
-
-                for (let i = 0; i < numInteractions; i++) {
-                    const randIndex = Math.floor(Math.random() * availableItems.length);
-                    const randItem = availableItems.splice(randIndex, 1)[0];
-                    items.push(randItem);
-                }
-
-                userInteractions.push({ user, items });
+        function animate() {
+            if (interactionCounter >= totalInteractions) {
+                return;
             }
 
-            return userInteractions;
+            const userInteraction = generateUserInteraction();
+            if (userInteraction) {
+                const { user, item } = userInteraction;
+
+                // Update cell in the data matrix
+                data[user][item] = 1;
+
+                // Update heatmap
+                cells.data(data.flat())
+                    .transition()
+                    .duration(200)
+                    .attr("fill", d => colorScale(d));
+
+                interactionCounter++;
+
+                if (interactionCounter % numRows === 0) {
+                    shuffledUsers = shuffle(users.slice());
+                }
+            }
+
+            // Schedule next update
+            setTimeout(animate, 500); // Adjust delay as needed
         }
 
-        // Start animation
-        const initialUserInteractions = generateUserInteractions();
-        animate(initialUserInteractions);
+        // Generate user interaction
+        function generateUserInteraction() {
+            const user = shuffledUsers.shift();
+            const availableItems = data[user].map((val, idx) => val === 0 ? idx : -1).filter(val => val !== -1);
+
+            if (availableItems.length > 0) {
+                const randIndex = Math.floor(Math.random() * availableItems.length);
+                const randItem = availableItems[randIndex];
+                return { user, item: randItem };
+            } else {
+                return null;
+            }
+        }
+
+
+        // Shuffle array function
+        function shuffle(array) {
+            let currentIndex = array.length, temporaryValue, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (currentIndex !== 0) {
+                // Pick a remaining element...
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+
+                // And swap it with the current element.
+                temporaryValue = array[currentIndex];
+                array[currentIndex] = array[randomIndex];
+                array[randomIndex] = temporaryValue;
+            }
+
+            return array;
+        }
+
+        document.querySelector('.start-button-recommender').addEventListener('click', animate)
     </script>
 </body>
 

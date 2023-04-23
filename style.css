@@ -8,6 +8,10 @@ g {
   margin: auto;
 }
 
+.cell{
+  stroke: #ccc;
+}
+
 .circle-1 {
   fill: #1919e6
 }
@@ -118,6 +122,10 @@ h2 {
 
 .margin-top {
   margin-top: 5vh;
+}
+
+.margin-bottom {
+  margin-bottom: 10vh;
 }
 
 .start-button {

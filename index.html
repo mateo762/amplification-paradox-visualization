@@ -28,6 +28,17 @@
           development and evaluation. The post will include an animation explaining how agent-based models can help
           unravel the paradox, making the complex subject more accessible. Ultimately, this aims to ensure the potential
           dangers of recommendation systems are acknowledged and addressed responsibly.</p>
+        <h2>The Recommender System</h2>
+        <p class="text-block last-text-block">To explore the content recommended by recommendation systems, we developed an agent-based
+          model. This model, which can be interpreted as a bot, selects videos from the suggestions provided by the
+          recommender. We can configure this model to choose videos randomly or to mimic the way people pick videos. To
+          accurately represent people's behavior, we introduce the term "relative utility," which represents the
+          usefulness of each category to the user. Categories with low relative utility for a user will have a smaller
+          chance of being selected by the model.</p>
+        <svg class="recommender-matrix"></svg>
+        <div class="button-container">
+          <button class="start-button start-button-recommender margin-bottom">Start animation</button>
+        </div>
         <h2>The Agent-Based Model</h2>
         <p class="text-block">To explore the content recommended by recommendation systems, we developed an agent-based
           model. This model, which can be interpreted as a bot, selects videos from the suggestions provided by the
@@ -46,7 +57,7 @@
             <label for="far-left-1">Far Left</label>
             <input type="radio" name="radio-topic" id="left-1" class="radio-margin" />
             <label for="left-1">Left</label>
-            <input type="radio" name="radio-topic" id="center-1" class="radio-margin" checked/>
+            <input type="radio" name="radio-topic" id="center-1" class="radio-margin" checked />
             <label for="center-1">Center</label>
             <input type="radio" name="radio-topic" id="right-1" class="radio-margin" />
             <label for="right-1">Right</label>
@@ -56,9 +67,9 @@
           <div class="radio-container">
             <input type="radio" name="radio-speed" id="slow" class="radio-margin" />
             <label for="slow">Slow</label>
-            <input type="radio" name="radio-speed" id="medium" class="radio-margin" checked/>
+            <input type="radio" name="radio-speed" id="medium" class="radio-margin" checked />
             <label for="medium">Medium</label>
-            <input type="radio" name="radio-speed" id="fast"/>
+            <input type="radio" name="radio-speed" id="fast" />
             <label for="fast">Fast</label>
           </div>
           <div class="button r" id="button-1">
@@ -187,6 +198,7 @@
   </div>
   </div>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js'></script>
+  <script src="recommender.js"></script>
   <script src="script.js"></script>
   <script src="bar.js"></script>
   <script src="random.js"></script>
