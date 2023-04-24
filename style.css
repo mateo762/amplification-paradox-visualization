@@ -8,9 +8,6 @@ g {
   margin: auto;
 }
 
-.cell{
-  stroke: #ccc;
-}
 
 .circle-1 {
   fill: #1919e6
@@ -379,4 +376,9 @@ h2 {
 #button-1 .knobs:before,
 #button-1 .layer {
   transition: 0.3s ease all;
+}
+
+.highlight {
+  stroke: green;
+  stroke-width: 4px;
 }
