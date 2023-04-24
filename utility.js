@@ -115,7 +115,13 @@ function startUtility() {
                 const posX = i * separationBar
                 const borderBar = d3.select(`.utility-bar-border-${i}`)
                     .attr('width', (3 * width / 4))
-                    .attr('height', newHeight)
+                    .attr('height', () => {
+                        if (i == 1 && orientation == 4) {
+                            return 0
+                        } else {
+                            return newHeight
+                        }
+                    })
                     .attr('y', utilityArray[i] >= firstValue ? groundPosition - newHeight : groundPosition)
                     .attr('x', (width / 4 / 2) + posX)
                     .attr('fill', 'none')
@@ -141,6 +147,8 @@ function startUtility() {
 
                 const firstValue = testValues[0];
 
+                const rectWidth = 60;
+                const rectHeight = 30;
 
                 // Create the bar with initial height of 0
 
@@ -163,8 +171,6 @@ function startUtility() {
                     .attr('stroke-width', 1);
 
                 // Create a small rectangle in the middle of the horizontal line
-                const rectWidth = 60;
-                const rectHeight = 30;
                 d3.select(`.utility-rect-${index}`)
                     .attr('x', ((width - rectWidth) / 2) + posX)
                     .attr('y', groundPosition - rectHeight / 2)
@@ -181,7 +187,13 @@ function startUtility() {
                     .attr('y', groundPosition + 5) // Adjust the vertical position to center the text within the rectangle
                     .attr('text-anchor', 'middle')
                     .attr('font-size', '18px')
-                    .text(((firstValue - 1) / scaleFactor * 100).toFixed(2))
+                    .text(() => {
+                        if (index == 1 && orientation == 4) {
+                            return "0.00"
+                        } else {
+                            return ((firstValue - 1) / scaleFactor * 100).toFixed(2)
+                        }
+                    })
                     .attr('fill', 'black')
                     .transition()
                     .duration(500)
@@ -235,8 +247,9 @@ function startUtility() {
                         if (i < testValues.length) {
                             const previousValue = i === 0 ? 0 : testValues[i - 1];
                             let currentValue = testValues[i];
-                            if((index == 4 && orientation == 2) /*|| (index == 1 && orientation == 4)*/){
+                            if ((index == 4 && orientation == 2) || (index == 1 && orientation == 4)) {
                                 currentValue = 0
+                                percentageChange = 0
                             }
                             const isCrossingZero = (previousValue < 0 && currentValue >= 0) || (previousValue >= 0 && currentValue < 0);
 
@@ -274,7 +287,13 @@ function startUtility() {
                                     .attr('font-size', '18px')
                                     .attr('fill', percentageChange > 0 ? 'green' : 'red') // Set the color based on the percentage change
                                     .attr('opacity', 0)
-                                    .text((percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%') // Add the correct sign based on the percentage change
+                                    .text(() => {
+                                        if (index == 1 && orientation == 4) {
+                                            return '0.00%'
+                                        } else {
+                                            return (percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%'
+                                        }
+                                    })
                                     .attr('class', `text-percentage`)
 
                                 // Transition the opacity from 0 to 1
@@ -284,7 +303,13 @@ function startUtility() {
 
                                 d3.select(`.utility-text-value-${index}`)
                                     .attr('opacity', 0)
-                                    .text(originalLastValue.toFixed(2))
+                                    .text(() => {
+                                        if(index == 1 && orientation == 4){
+                                            return '0.00'
+                                        }else{
+                                            return originalLastValue.toFixed(2)
+                                        }
+                                    })
                                     .attr('fill', percentageChange > 0 ? 'green' : 'red') // Set the color based on the percentage change
                                     .transition()
                                     .duration(500)
