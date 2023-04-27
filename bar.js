@@ -1,4 +1,4 @@
-function startPart1B(){
+function startPart1B() {
     const random_data = Array.from({ length: 5 }, () => ({ "Value": 0.2 }));
 
     d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
@@ -99,6 +99,117 @@ function startPart1B(){
             }
             else {
                 selectedData = random_data
+            }
+
+
+            switch (checkedRadio.id) {
+                case "far-left-1":
+                    d3.selectAll(".circles-group").remove()
+                    d3.selectAll('.initial')
+                        .attr('opacity', 1)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 0)
+                        .remove()
+                    d3.select('#animation').append('circle')
+                        .attr('cx', function () {
+                            return 75
+                        })
+                        .attr('cy', 230 - 10)
+                        .attr('r', '10')
+                        .attr('fill', colors[0])
+                        .attr('class', 'initial')
+                        .attr('opacity', 0)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 1)
+                    break;
+                case "left-1":
+                    d3.selectAll(".circles-group").remove()
+                    d3.selectAll('.initial')
+                        .attr('opacity', 1)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 0)
+                        .remove()
+                    d3.select('#animation').append('circle')
+                        .attr('cx', function () {
+                            return 225
+                        })
+                        .attr('cy', 230 - 10)
+                        .attr('r', '10')
+                        .attr('fill', colors[1])
+                        .attr('class', 'initial')
+                        .attr('opacity', 0)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 1)
+                    break;
+                case "center-1":
+                    d3.selectAll(".circles-group").remove()
+                    d3.selectAll('.initial')
+                        .attr('opacity', 1)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 0)
+                        .remove()
+                    d3.select('#animation').append('circle')
+                        .attr('cx', function () {
+                            return 375
+                        })
+                        .attr('cy', 230 - 10)
+                        .attr('r', '10')
+                        .attr('fill', colors[2])
+                        .attr('class', 'initial')
+                        .attr('opacity', 0)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 1)
+                    break;
+                case "right-1":
+                    d3.selectAll(".circles-group").remove()
+                    d3.selectAll('.initial')
+                        .attr('opacity', 1)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 0)
+                        .remove()
+                    d3.select('#animation').append('circle')
+                        .attr('cx', function () {
+                            return 525
+                        })
+                        .attr('cy', 230 - 10)
+                        .attr('r', '10')
+                        .attr('fill', colors[3])
+                        .attr('class', 'initial')
+                        .attr('opacity', 0)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 1)
+                    break;
+                case "far-right-1":
+                    d3.selectAll(".circles-group").remove()
+                    d3.selectAll('.initial')
+                        .attr('opacity', 1)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 0)
+                        .remove()
+                    d3.select('#animation').append('circle')
+                        .attr('cx', function () {
+                            return 675
+                        })
+                        .attr('cy', 230 - 10)
+                        .attr('r', '10')
+                        .attr('fill', colors[4])
+                        .attr('class', 'initial')
+                        .attr('opacity', 0)
+                        .transition()
+                        .duration(500)
+                        .attr('opacity', 1)
+                    break;
+                default:
+                    return;
             }
 
             // Update the x-scale domain

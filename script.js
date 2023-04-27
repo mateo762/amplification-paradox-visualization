@@ -67,7 +67,7 @@ function startPart1A() {
 			if (checkedRadioTopic.id == 'far-left-1') {
 				link_csv = "https://mateo762.github.io/data/U_L_user_0_idy_1011_sim_0.csv.txt"
 			} else if (checkedRadioTopic.id == 'left-1') {
-				link_csv = "https://mateo762.github.io/data/U_CL_user_150_idy_1629.csv_sim_0.txt"
+				link_csv = "https://mateo762.github.io/data/U_CL_user_150_idy_1629_sim_0.csv.txt"
 			} else if (checkedRadioTopic.id == 'center-1') {
 				link_csv = "https://mateo762.github.io/data/U_C_user_300_idy_156_sim_0.csv.txt"
 			} else if (checkedRadioTopic.id == 'right-1') {
@@ -140,9 +140,22 @@ function startPart1A() {
 
 			const waitUntilStart = [600, 400, 200]
 
+			let countTopics;
+
+			if (checkedRadioTopic.id == 'far-left-1') {
+				countTopics = [1, 0, 0, 0, 0]
+			} else if (checkedRadioTopic.id == 'left-1') {
+				countTopics = [0, 1, 0, 0, 0]
+			} else if (checkedRadioTopic.id == 'center-1') {
+				countTopics = [0, 0, 1, 0, 0]
+			} else if (checkedRadioTopic.id == 'right-1') {
+				countTopics = [0, 0, 0, 1, 0]
+			} else if (checkedRadioTopic.id == 'far-right-1') {
+				countTopics = [0, 0, 0, 0, 1]
+			}
+
 
 			const iterations = circleData.length
-			const countTopics = [0, 0, 0, 0, 0]
 			const circleLastCx = circleRadius + (circlesSeparation * numCircles - 1)
 
 			const circleGroup = d3.select("#animation")
@@ -179,23 +192,24 @@ function startPart1A() {
 
 			function update() {
 
-				setTimeout(() => {d3.select("#selected")
-					.transition()
-					.duration(circlesRemoveDuration[speed])
-					.attr("r", 10)
-					.attr('cx', function (d) {
-						// Return the corresponding box center for each circle
-						position = (countTopics[d.value - 1] - 1) % 4
-						const boxIndex = d.value - 1;
-						const boxCenterX = boxX + (boxXIncrement * boxIndex) + ((boxWidth / 3) * 1.5);
-						return (boxCenterX + (boxWidth / 3) * 1.5 - d.radius) - position * 2 * d.radius - 5
+				setTimeout(() => {
+					d3.select("#selected")
+						.transition()
+						.duration(circlesRemoveDuration[speed])
+						.attr("r", 10)
+						.attr('cx', function (d) {
+							// Return the corresponding box center for each circle
+							position = (countTopics[d.value - 1] - 1) % 4
+							const boxIndex = d.value - 1;
+							const boxCenterX = boxX + (boxXIncrement * boxIndex) + ((boxWidth / 3) * 1.5);
+							return (boxCenterX + (boxWidth / 3) * 1.5 - d.radius) - position * 2 * d.radius - 5
 
-					})
-					.attr('cy', function (d) {
-						position = countTopics[d.value - 1] - 1 == 0 ? 0 : Math.floor((countTopics[d.value - 1] - 1) / 4)
-						return (height - d.radius) - position * 2 * d.radius
-					})
-					.attr('id', "inside")
+						})
+						.attr('cy', function (d) {
+							position = countTopics[d.value - 1] - 1 == 0 ? 0 : Math.floor((countTopics[d.value - 1] - 1) / 4)
+							return (height - d.radius) - position * 2 * d.radius
+						})
+						.attr('id', "inside")
 				}, waitUntilStart[speed])
 
 				// Add a filter to select only the non-selected circles
