@@ -1,4 +1,7 @@
 function startRandom() {
+
+    const startButton = document.querySelector('.start-button-random')
+
     const plots = [['Start:L/Measure:L', 'Start:L/Measure:CL', 'Start:L/Measure:C',
         'Start:L/Measure:CR', 'Start:L/Measure:R'],
     ['Start:CL/Measure:L', 'Start:CL/Measure:CL', 'Start:CL/Measure:C',
@@ -152,6 +155,9 @@ function startRandom() {
             // Function to animate the bar
             function animateBar() {
 
+                d3.selectAll('.text-percentage').remove()
+
+                setStartButtonDisabled(true)
 
                 testValuesArray.forEach((testValues, index) => {
                     let i = 0;
@@ -244,6 +250,8 @@ function startRandom() {
                                     .transition()
                                     .duration(500)
                                     .attr('opacity', 1)
+
+                                setStartButtonDisabled(false)
                             }
                             i++;
                             // Call the function again with a delay
@@ -278,6 +286,17 @@ function startRandom() {
 
         return parseData
     }
+
+
+    function setStartButtonDisabled(isDisabled) {
+        startButton.disabled = isDisabled
+        if (isDisabled) {
+            startButton.classList.add("disabled")
+        } else {
+            startButton.classList.remove("disabled")
+        }
+    }
+
     updateOrientation(2)
 }
 

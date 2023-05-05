@@ -1,4 +1,7 @@
 function startUtility() {
+
+    const startButton = document.querySelector('.start-button-utility')
+
     const plots = [['Start:L/Measure:L', 'Start:L/Measure:CL', 'Start:L/Measure:C',
         'Start:L/Measure:CR', 'Start:L/Measure:R'],
     ['Start:CL/Measure:L', 'Start:CL/Measure:CL', 'Start:CL/Measure:C',
@@ -206,6 +209,9 @@ function startUtility() {
             // Function to animate the bar
             function animateBar() {
 
+                d3.selectAll('.text-percentage').remove()
+
+                setStartButtonDisabled(true)
 
                 testValuesArray.forEach((testValues, index) => {
                     let i = 0;
@@ -304,9 +310,9 @@ function startUtility() {
                                 d3.select(`.utility-text-value-${index}`)
                                     .attr('opacity', 0)
                                     .text(() => {
-                                        if(index == 1 && orientation == 4){
+                                        if (index == 1 && orientation == 4) {
                                             return '0.00'
-                                        }else{
+                                        } else {
                                             return originalLastValue.toFixed(2)
                                         }
                                     })
@@ -314,6 +320,8 @@ function startUtility() {
                                     .transition()
                                     .duration(500)
                                     .attr('opacity', 1)
+
+                                setStartButtonDisabled(false)
                             }
                             i++;
                             // Call the function again with a delay
@@ -353,6 +361,15 @@ function startUtility() {
         let parseData = []
         data.map(d => parseData.push(d.Value))
         return parseData
+    }
+
+    function setStartButtonDisabled(isDisabled) {
+        startButton.disabled = isDisabled
+        if (isDisabled) {
+            startButton.classList.add("disabled")
+        } else {
+            startButton.classList.remove("disabled")
+        }
     }
 
     updateOrientation(2)

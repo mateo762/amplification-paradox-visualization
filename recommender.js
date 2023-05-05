@@ -1,4 +1,8 @@
 function startRecommender() {
+
+    const startButton = document.querySelector('.start-button-recommender')
+    const stopButton = document.querySelector('.stop-button-recommender')
+
     // Data - initialize the user-item matrix data
     const numRows = 10;
     const numCols = 10;
@@ -25,47 +29,49 @@ function startRecommender() {
         .attr("class", "row-group")
         .attr("transform", (d, i) => `translate(${margin.left}, ${margin.top + i * cellSize})`);
 
+    function drawCells() {
+        const cells = rowGroups.selectAll(".cell")
+            .data(d => d)
+            .join("rect")
+            .attr("class", "cell")
+            .attr("x", (d, i) => i * cellSize)
+            .attr("y", 0)
+            .attr("width", cellSize - 2) // Adjust cell width
+            .attr("height", cellSize - 2) // Adjust cell height
+            .attr("fill", d => colorScale(d))
+            .attr("stroke", "#ccc")
+            .attr("stroke-width", "3px")
 
-    const cells = rowGroups.selectAll(".cell")
-        .data(d => d)
-        .join("rect")
-        .attr("class", "cell")
-        .attr("x", (d, i) => i * cellSize)
-        .attr("y", 0)
-        .attr("width", cellSize - 2) // Adjust cell width
-        .attr("height", cellSize - 2) // Adjust cell height
-        .attr("fill", d => colorScale(d))
-        .attr("stroke", "#ccc")
-        .attr("stroke-width", "3px")
+        // Add labels
+        svg.append("text")
+            .attr("x", margin.left / 2)
+            .attr("y", (height + margin.top) / 2)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .attr('font-size', '30px')
+            .attr("transform", `rotate(-90, ${margin.left / 2}, ${(height + margin.top) / 2})`)
+            .text("Users");
 
-    // Add labels
-    svg.append("text")
-        .attr("x", margin.left / 2)
-        .attr("y", (height + margin.top) / 2)
-        .attr("text-anchor", "middle")
-        .attr("alignment-baseline", "middle")
-        .attr('font-size', '30px')
-        .attr("transform", `rotate(-90, ${margin.left / 2}, ${(height + margin.top) / 2})`)
-        .text("Users");
-
-    svg.append("text")
-        .attr("x", (width / 2) + margin.left)
-        .attr("y", margin.top / 2)
-        .attr("text-anchor", "middle")
-        .attr('font-size', '30px')
-        .attr("alignment-baseline", "middle")
-        .text("Items");
+        svg.append("text")
+            .attr("x", (width / 2) + margin.left)
+            .attr("y", margin.top / 2)
+            .attr("text-anchor", "middle")
+            .attr('font-size', '30px')
+            .attr("alignment-baseline", "middle")
+            .text("Items");
+    }
+    drawCells()
 
 
     let interactionCounter = 0;
     const interactionsPerUser = 4;
     const totalInteractions = numRows * interactionsPerUser;
+    let intervalId;
 
     const users = Array.from({ length: numRows }, (_, i) => i);
     let shuffledUsers = shuffle(users.slice());
 
     function animate() {
-        console.log(data);
         if (interactionCounter >= totalInteractions) {
             return;
         }
@@ -85,11 +91,12 @@ function startRecommender() {
 
             setTimeout(() => {
                 rowGroups.filter((_, i) => similarUsers.includes(i))
-                .selectAll(".cell") // Select the cells within the group
-                .attr("stroke-width", "4px") // Set stroke width directly
-                .transition()
-                .duration(250)
-                .attr("stroke", "green")}, 500); // Set stroke color directly
+                    .selectAll(".cell") // Select the cells within the group
+                    .attr("stroke-width", "4px") // Set stroke width directly
+                    .transition()
+                    .duration(250)
+                    .attr("stroke", "green")
+            }, 500); // Set stroke color directly
 
             // Schedule the removal of highlighting after a delay
             setTimeout(() => {
@@ -120,9 +127,16 @@ function startRecommender() {
                 shuffledUsers = shuffle(users.slice());
             }
         }
+        if (interactionCounter >= numRows * interactionsPerUser) {
+            setStartButtonDisabled(false)
+        }
 
+    }
+
+    function startAnimate(){
         // Schedule next update
-        setTimeout(animate, 2000); // Adjust delay as needed
+        animate()
+        intervalId = setInterval(animate, 2000); // Adjust delay as needed
     }
 
     // Calculate cosine similarity
@@ -207,10 +221,26 @@ function startRecommender() {
         consumed = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
     }
 
-    document.querySelector('.start-button-recommender').addEventListener('click', () => {
+    startButton.addEventListener('click', () => {
+        drawCells()
         reset()
-        animate()
+        startAnimate()
+        setStartButtonDisabled(true)
     })
+
+    stopButton.addEventListener('click', () =>{
+        clearInterval(intervalId)
+        setStartButtonDisabled(false)
+    })
+
+    function setStartButtonDisabled(isDisabled) {
+        startButton.disabled = isDisabled
+        if (isDisabled) {
+            startButton.classList.add("disabled")
+        } else {
+            startButton.classList.remove("disabled")
+        }
+    }
 }
 
 startRecommender()
