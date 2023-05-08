@@ -46,7 +46,7 @@ function startUtility() {
     const separationBar = 152
 
 
-    const scaleFactor = 1e3
+    const scaleFactor = 1e5
     const exaggerationFactor = 500
 
 
@@ -234,7 +234,7 @@ function startUtility() {
                     //     percentageChange = -percentageChange;
                     // }
 
-                    percentageChange = originalLastValue - originalFirstValue
+                    //percentageChange = originalLastValue - originalFirstValue
 
                     console.log(originalFirstValue, originalLastValue, parseFloat(percentageChange.toFixed(2)))
                     const posX = index * separationBar

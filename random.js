@@ -180,7 +180,7 @@ function startRandom() {
                     //     percentageChange = -percentageChange;
                     // }
 
-                    percentageChange = originalLastValue - originalFirstValue
+                    //percentageChange = originalLastValue - originalFirstValue
 
                     console.log(originalFirstValue, originalLastValue, parseFloat(percentageChange.toFixed(2)))
                     const posX = index * separationBar
