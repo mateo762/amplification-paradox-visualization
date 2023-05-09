@@ -51,7 +51,7 @@ function startRecommender() {
             .attr("y", cellSize / 2)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
-            .attr('font-size', '18px')
+            .attr('font-size', '22px')
             .attr("fill", "#333")
             .text(""); // Initialize with an empty string
 
@@ -123,7 +123,7 @@ function startRecommender() {
                     .transition()
                     .duration(250)
                     .attr("fill", "purple")
-                    .attr("opacity", "0.7")
+                    .attr("opacity", "0.6")
             }, 1000);
 
             // Display cosine similarity scores for current user's cells

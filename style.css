@@ -8,6 +8,12 @@ g {
   margin: auto;
 }
 
+.div-random-svg {
+  background-color: #D8D8D8;
+  width: 800px;
+  text-align: center;
+  border: 1px solid black;
+}
 
 .circle-1 {
   fill: #1919e6
@@ -30,7 +36,8 @@ g {
 }
 
 .text-block {
-  font-size: 18px; /* Adjust the font size to your preference */
+  font-size: 18px;
+  /* Adjust the font size to your preference */
   font-weight: normal;
   color: #333;
   text-align: justify;
@@ -38,16 +45,17 @@ g {
   line-height: 1.6;
 }
 
-.start-text-block{
+.start-text-block {
   margin-top: 70px
 }
 
-.last-text-block{
+.last-text-block {
   margin-bottom: 100px
 }
 
 h1 {
-  font-size: 36px; /* Adjust the font size to your preference */
+  font-size: 36px;
+  /* Adjust the font size to your preference */
   font-weight: bold;
   color: #333;
   text-align: center;
@@ -56,7 +64,8 @@ h1 {
 }
 
 h2 {
-  font-size: 28px; /* Adjust the font size to your preference */
+  font-size: 28px;
+  /* Adjust the font size to your preference */
   font-weight: bold;
   align-self: flex-start;
   color: #333;
@@ -64,14 +73,14 @@ h2 {
   margin-bottom: 20px;
 }
 
-.big-container{
+.big-container {
   width: 900px;
   margin: 0 auto;
   background-color: #f5f5f5;
 
   /* Add a box shadow effect */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-  
+
   /* Optional: Add border-radius for rounded corners */
   border-radius: 4px;
 }
