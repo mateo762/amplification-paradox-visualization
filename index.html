@@ -29,12 +29,22 @@
           unravel the paradox, making the complex subject more accessible. Ultimately, this aims to ensure the potential
           dangers of recommendation systems are acknowledged and addressed responsibly.</p>
         <h2>The Recommender System</h2>
-        <p class="text-block last-text-block">Let's start talking about the recommender system. Most websites like
+        <p class="text-block">Let's start talking about the recommender system. Most websites like
           Amazon, Youtube and Netflix use collaborative filtering as a part of their sophisticated recommendation
           systems. But what is collaborative filtering? Well, it is a technique used to recommend items to an user A
           based on the interest of a similar user called B. The underlying assumption of the collaborative filtering
           approach is that if a person A has the same opinion as a person B on an issue, A is more likely to have B's
           opinion on a different issue than that of a randomly chosen person.</p>
+        <p class="text-block last-text-block">In this visualization, we demonstrate the inner workings of a
+          collaborative filtering recommender system using an interactive matrix of users and items. The matrix
+          represents the users along the rows and the items along the columns, with each cell indicating if the user has
+          consumed that item. To show the recommendation process in action, we highlight the current user row, the most
+          similar users, and the top recommended items during each iteration. The current user's row is highlighted in
+          red, while the most similar users have their rows highlighted in green. Meanwhile, the top recommended items
+          for the current user are marked in purple, at the end the user chooses an item from the purple items
+          proportionally to the utility scores each item has. As the visualization progresses, you'll see how the
+          recommender system leverages the preferences of similar users to identify the most relevant items for the
+          current user.</p>
         <svg class="recommender-matrix"></svg>
         <div class="button-container">
           <button class="start-button start-button-recommender margin-bottom">Start animation</button>
@@ -51,7 +61,8 @@
           observe how it selects videos from the recommendations provided by the system. You can decide whether you want
           the model to pick videos randomly or based on utility. When set to random, all categories have an equal chance
           of being selected, whereas when set to utility, categories have varying chances of being selected depending on
-          the user's preferences. You can see these probabilities in the bar chart below.</p>
+          the user's preferences. You can see these probabilities in the bar chart below. You can also change the
+          animation speed to your liking.</p>
         <div class="radio-wrapper">
           <div class="radio-container">
             <input type="radio" name="radio-topic" id="far-left-1" class="radio-margin" />
@@ -97,11 +108,13 @@
       </div>
       <div class="part part-2">
         <h2>Random Selection</h2>
-        <p class="text-block last-text-block">In this visualization, the size of each square represents the amount of
-          content selected
-          from its corresponding category by the model. The behavior of each category varies based on the political
-          orientation of the user. It's worth noting that this model configuration was previously used in studies to
-          support the notion of extreme content amplification.
+        <p class="text-block last-text-block">
+          In this visualization, we present five bar charts, each representing a distinct segment of the political
+          spectrum: far left, left, center, right, and far right. The percentages within the rectangles indicate the
+          proportion of content being recommended from each category. By clicking the 'Animate' button, the model begins
+          to select videos, causing the distribution of recommendations across categories to fluctuate. It is important
+          to note that this particular model configuration has been employed in previous studies to demonstrate the
+          phenomenon of extreme content amplification.
         </p>
         <div class="radio-container">
           <input type="radio" id="center-random" name="position-random" value="Center" checked>
@@ -143,7 +156,7 @@
       </div>
       <div class="part part-3">
         <h2>Utility Selection</h2>
-        <p class="text-block last-text-block">We've observed how recommender systems tend to amplify extreme content
+        <p class="text-block">We've observed how recommender systems tend to amplify extreme content
           through random selection. But, let's be real, that's not how people actually choose videos. When you're
           browsing
           YouTube, you don't just click on random videos, do you? You typically go for the ones that catch your
@@ -151,7 +164,13 @@
           That's what this configuration aims to mimic. We figure out the value of each category for a user, and then
           the
           model picks a video based on the combined utilities we've calculated.</p>
-
+        <p class="text-block last-text-block">
+          You may observe that this visualization already features rectangles for each segment of the political
+          spectrum. These rectangles signify the utility of each category for a user with a specific political
+          orientation. To substantiate the claim that a category is being amplified, the quantity of content recommended
+          from that category should exceed its utility. This configuration has been employed to counter the argument
+          that extreme content is amplified by recommendation systems.
+        </p>
         <div class="radio-container">
           <input type="radio" id="center-utility" name="position-utility" value="Center" checked>
           <label for="center-utility">Center</label>
