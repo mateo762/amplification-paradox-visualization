@@ -4,13 +4,13 @@ function startRecommender() {
     const stopButton = document.querySelector('.stop-button-recommender')
 
     // Data - initialize the user-item matrix data
-    const numRows = 10;
+    const numRows = 5;
     const numCols = 10;
     let data = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => Math.random()));
     let consumed = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
 
     // Dimensions
-    const cellSize = 50;
+    const cellSize = 70;
     const width = cellSize * numCols;
     const height = cellSize * numRows;
     const margin = { top: 80, right: 20, bottom: 20, left: 80 };
@@ -41,6 +41,19 @@ function startRecommender() {
             .attr("fill", d => colorScale(d))
             .attr("stroke", "#ccc")
             .attr("stroke-width", "3px")
+
+        // Add text elements for each cell
+        const cellTexts = rowGroups.selectAll(".cell-text")
+            .data(d => d)
+            .join("text")
+            .attr("class", "cell-text")
+            .attr("x", (d, i) => i * cellSize + cellSize / 2)
+            .attr("y", cellSize / 2)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "middle")
+            .attr('font-size', '18px')
+            .attr("fill", "#333")
+            .text(""); // Initialize with an empty string
 
         // Add labels
         svg.append("text")
@@ -81,7 +94,9 @@ function startRecommender() {
             const { user, item } = userInteraction;
 
             const similarUsers = getMostSimilarUsers(user);
+            const topItems = selectTopCosineSimilarityVideos(user, similarUsers);
 
+            // Highlight the current user
             rowGroups.filter((_, i) => i === user) // Select the user row
                 .selectAll(".cell") // Select the cells within the user row
                 .attr("stroke-width", "4px") // Set stroke width directly
@@ -89,6 +104,7 @@ function startRecommender() {
                 .duration(250)
                 .attr("stroke", "red"); // Set stroke color directly
 
+            // Highlight top similar users
             setTimeout(() => {
                 rowGroups.filter((_, i) => similarUsers.includes(i))
                     .selectAll(".cell") // Select the cells within the group
@@ -98,6 +114,41 @@ function startRecommender() {
                     .attr("stroke", "green")
             }, 500); // Set stroke color directly
 
+            // Highlight top items
+            setTimeout(() => {
+                rowGroups
+                    .filter((_, i) => i === user)
+                    .selectAll(".cell")
+                    .filter((_, i) => topItems.map(item => item.item).includes(i))
+                    .transition()
+                    .duration(250)
+                    .attr("fill", "purple")
+                    .attr("opacity", "0.7")
+            }, 1000);
+
+            // Display cosine similarity scores for current user's cells
+            setTimeout(() => {
+                rowGroups
+                    .filter((_, i) => i === user)
+                    .selectAll(".cell-text")
+                    .text((_, i) => {
+                        const similarity = topItems.find(item => item.item === i);
+                        return similarity ? similarity.similarity.toFixed(2) : '';
+                    });
+                setTimeout(() => {
+                    rowGroups
+                        .filter((_, i) => i === user)
+                        .selectAll(".cell-text")
+                        .text((_, i) => {
+                            const similarUsers = getMostSimilarUsers(user);
+                            const similarity = selectTopCosineSimilarityVideos(user, similarUsers).find(item => item.item === i);
+                            return '';
+                        });
+                }, 1000);
+            }, 1000);
+
+            // Schedule the removal of top item highlighting after a delay
+
             // Schedule the removal of highlighting after a delay
             setTimeout(() => {
                 rowGroups.selectAll(".cell") // Select the cells within the group
@@ -105,7 +156,7 @@ function startRecommender() {
                     .duration(250)
                     .attr("stroke", "#ccc") // Remove stroke color
                     .attr("stroke-width", "2px"); // Reset stroke width to 0
-            }, 1500); // Adjust the delay as needed
+            }, 2000); // Adjust the delay as needed
 
             // Update cell in the data matrix
             consumed[user][item] = 1;
@@ -115,11 +166,11 @@ function startRecommender() {
                 rowGroups
                     .filter((_, i) => i === user)
                     .selectAll(".cell")
-                    .filter((_, i) => i === item)
                     .transition()
                     .duration(200)
-                    .attr("fill", () => colorScale(1))
-            }, 1000);
+                    .attr("fill", (d, i) => colorScale(consumed[user][i]))
+                    .attr("opacity", "1")
+            }, 1700);
 
             interactionCounter++;
 
@@ -133,10 +184,12 @@ function startRecommender() {
 
     }
 
-    function startAnimate(){
+
+
+    function startAnimate() {
         // Schedule next update
         animate()
-        intervalId = setInterval(animate, 2000); // Adjust delay as needed
+        intervalId = setInterval(animate, 3000); // Adjust delay as needed
     }
 
     // Calculate cosine similarity
@@ -158,11 +211,10 @@ function startRecommender() {
         return userSimilarities.slice(0, numSimilarUsers).map(u => u.index);
     }
 
-    // Select the video with the highest cosine similarity
-    function selectHighestCosineSimilarityVideo(user, similarUsers) {
+
+    function selectTopCosineSimilarityVideos(user, similarUsers, topN = 3) {
         const availableItems = consumed[user].map((val, idx) => val === 0 ? idx : -1).filter(val => val !== -1);
-        let maxSimilarity = -1;
-        let selectedItem = -1;
+        const itemSimilarities = [];
 
         availableItems.forEach(item => {
             const itemSimilarity = similarUsers.reduce(
@@ -170,23 +222,34 @@ function startRecommender() {
                 0
             );
 
-            if (itemSimilarity > maxSimilarity) {
-                maxSimilarity = itemSimilarity;
-                selectedItem = item;
-            }
+            itemSimilarities.push({ item, similarity: itemSimilarity });
         });
 
-        return selectedItem;
+        itemSimilarities.sort((a, b) => b.similarity - a.similarity);
+        itemSimilarities.forEach((d) => console.log(d))
+        return itemSimilarities.slice(0, topN);
     }
 
 
-    // Generate user interaction
     function generateUserInteraction() {
         const user = shuffledUsers.shift();
         const similarUsers = getMostSimilarUsers(user);
-        const selectedItem = selectHighestCosineSimilarityVideo(user, similarUsers);
+        const topItems = selectTopCosineSimilarityVideos(user, similarUsers);
 
-        if (selectedItem !== -1) {
+        if (topItems.length > 0) {
+            const totalSimilarity = topItems.reduce((sum, item) => sum + item.similarity, 0);
+            const randomSimilarity = Math.random() * totalSimilarity;
+            let accumulatedSimilarity = 0;
+            let selectedItem = -1;
+
+            for (const item of topItems) {
+                accumulatedSimilarity += item.similarity;
+                if (randomSimilarity <= accumulatedSimilarity) {
+                    selectedItem = item.item;
+                    break;
+                }
+            }
+
             return { user, item: selectedItem };
         } else {
             return null;
@@ -228,7 +291,7 @@ function startRecommender() {
         setStartButtonDisabled(true)
     })
 
-    stopButton.addEventListener('click', () =>{
+    stopButton.addEventListener('click', () => {
         clearInterval(intervalId)
         setStartButtonDisabled(false)
     })
