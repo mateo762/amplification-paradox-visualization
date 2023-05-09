@@ -155,7 +155,7 @@ function startRandom() {
             // Function to animate the bar
             function animateBar() {
 
-                d3.selectAll('.text-percentage').remove()
+                d3.selectAll('.text-percentage-random').remove()
 
                 setStartButtonDisabled(true)
 
@@ -236,7 +236,7 @@ function startRandom() {
                                     .attr('fill', percentageChange > 0 ? 'green' : 'red') // Set the color based on the percentage change
                                     .attr('opacity', 0)
                                     .text((percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%') // Add the correct sign based on the percentage change
-                                    .attr('class', `text-percentage`)
+                                    .attr('class', `text-percentage-random`)
 
                                 // Transition the opacity from 0 to 1
                                 percentageText.transition()

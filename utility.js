@@ -209,7 +209,7 @@ function startUtility() {
             // Function to animate the bar
             function animateBar() {
 
-                d3.selectAll('.text-percentage').remove()
+                d3.selectAll('.text-percentage-utility').remove()
 
                 setStartButtonDisabled(true)
 
@@ -300,7 +300,7 @@ function startUtility() {
                                             return (percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%'
                                         }
                                     })
-                                    .attr('class', `text-percentage`)
+                                    .attr('class', `text-percentage-utility`)
 
                                 // Transition the opacity from 0 to 1
                                 percentageText.transition()
