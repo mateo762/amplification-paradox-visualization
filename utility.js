@@ -136,7 +136,7 @@ function startUtility() {
 
         function setUp(testValuesArray) {
 
-            d3.selectAll('.text-percentage').remove()
+            d3.selectAll('.text-percentage-utility').remove()
 
             // Set the initial reference point for the bar
 
@@ -210,6 +210,20 @@ function startUtility() {
             function animateBar() {
 
                 d3.selectAll('.text-percentage-utility').remove()
+
+                testValuesArray.forEach((testValues, index) => {
+                    const posX = index * separationBar
+                    const firstValue = testValues[0];
+                    d3.select(`.utility-text-value-${index}`)
+                        .attr('x', (width / 2) + posX)
+                        .attr('y', groundPosition + 5) // Adjust the vertical position to center the text within the rectangle
+                        .attr('text-anchor', 'middle')
+                        .attr('font-size', '18px')
+                        .text(((firstValue - 1) / scaleFactor * 100).toFixed(2))
+                        .attr('fill', 'black')
+                        .attr('opacity', 1)
+                });
+
 
                 setStartButtonDisabled(true)
 
