@@ -37,7 +37,7 @@ function startPart1A() {
 		.attr("height", boxHeight)
 		.attr("opacity", boxOpacity)
 
-	const startButton = document.querySelector(".start-button-part-1")
+	const startButton = document.querySelector(".start-button-agent")
 	startButton.addEventListener("click", start)
 
 	let intervalId;
@@ -251,7 +251,7 @@ function startPart1A() {
 		d3.selectAll(".circles-group").selectAll(".inside").remove();
 	}
 
-	document.querySelector(".stop-button").addEventListener("click", stop);
+	document.querySelector(".stop-button-agent").addEventListener("click", stop);
 
 
 	function setStartButtonDisabled(isDisabled) {
