@@ -37,10 +37,25 @@ function startPart1A() {
 		.attr("height", boxHeight)
 		.attr("opacity", boxOpacity)
 
+	let progressBarData = new Array(19).fill(0);
+
+	const progressBar = d3.select("#agent-progress-bar")
+		.selectAll("circle")
+		.data(progressBarData)
+		.enter()
+		.append("circle")
+		.attr("class", "circle")
+		.attr("cx", function (d, i) {
+			return 80 + i * 30;
+		})
+		.attr("cy", 50)
+		.attr("r", 10);
+
 	const startButton = document.querySelector(".start-button-agent")
 	startButton.addEventListener("click", start)
 
 	let intervalId;
+	var progressIntervalId;
 
 	function start() {
 		setStartButtonDisabled(true)
@@ -226,10 +241,27 @@ function startPart1A() {
 				nonSelectedCircles.remove();
 			}
 
+			const progressBarSpeed = [2700, 2000, 1200]
+
+
+			function updateProgressBar() {
+				var index = 0;
+				progressIntervalId = setInterval(function () {
+					if (index < progressBarData.length) {
+						d3.select("#agent-progress-bar").select("circle:nth-child(" + (index + 1) + ")")
+							.attr("class", "circle green");
+						index++;
+					} else {
+						clearInterval(progressIntervalId);
+					}
+				}, progressBarSpeed[speed]);
+			}
+
 			let iter = 0
 
 			function updateAll() {
 				updateData(iter)
+				updateProgressBar()
 				setTimeout(update, iterationDuration[speed])
 				iter++
 				if (iter == iterations) {
@@ -246,6 +278,7 @@ function startPart1A() {
 
 
 	function stop() {
+		clearInterval(progressIntervalId);
 		clearInterval(intervalId);
 		setStartButtonDisabled(false)
 		d3.selectAll(".circles-group").selectAll(".inside").remove();

@@ -391,3 +391,12 @@ h2 {
   stroke: green;
   stroke-width: 4px;
 }
+
+.circle {
+    fill: #ccc;
+}
+
+.green {
+    fill: #008000;
+}
+
