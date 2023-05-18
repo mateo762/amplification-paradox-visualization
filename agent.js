@@ -37,14 +37,20 @@ function startPart1A() {
 		.attr("height", boxHeight)
 		.attr("opacity", boxOpacity)
 
-	let progressBarData = new Array(19).fill(0);
+	let progressBarData = new Array(20).fill(0);
 
 	const progressBar = d3.select("#agent-progress-bar")
 		.selectAll("circle")
 		.data(progressBarData)
 		.enter()
 		.append("circle")
-		.attr("class", "circle")
+		.attr("class", function (d, i) {
+			if (i == 0) {
+				return "circle green"
+			} else {
+				return "circle"
+			}
+		})
 		.attr("cx", function (d, i) {
 			return 80 + i * 30;
 		})
@@ -55,9 +61,38 @@ function startPart1A() {
 	startButton.addEventListener("click", start)
 
 	let intervalId;
-	var progressIntervalId;
+	let progressIntervalId;
+	let progressIndex = 1
+
+	function updateProgressBar(speed) {
+		setTimeout(function () {
+			if (progressIndex < progressBarData.length) {
+				d3.select("#agent-progress-bar").select("circle:nth-child(" + (progressIndex + 1) + ")")
+					.attr("opacity", 0.5)
+					.transition()
+					.duration(500)
+					.attr("class", "circle green")
+					.attr("opacity", 1)
+				progressIndex++;
+			}
+		}, 0)
+		progressIntervalId = setInterval(function () {
+			if (progressIndex < progressBarData.length) {
+				d3.select("#agent-progress-bar").select("circle:nth-child(" + (progressIndex + 1) + ")")
+					.attr("opacity", 0.5)
+					.transition()
+					.duration(500)
+					.attr("class", "circle green")
+					.attr("opacity", 1)
+				progressIndex++;
+			} else {
+				clearInterval(progressIntervalId);
+			}
+		}, speed);
+	}
 
 	function start() {
+		resetProgressBar()
 		setStartButtonDisabled(true)
 		clearInterval(intervalId)
 
@@ -65,6 +100,9 @@ function startPart1A() {
 		let link_csv = ""
 		const checkedRadioTopic = document.querySelector('input[name="radio-topic"]:checked');
 		const checkedMode = document.querySelector("#checkbox-mode")
+
+		document.querySelector('.checkbox-progress').addEventListener("click", resetProgressBar)
+		document.querySelectorAll('input[name="radio-topic"]').forEach((radioBox) => radioBox.addEventListener("click", resetProgressBar))
 
 		if (checkedMode.checked) {
 			if (checkedRadioTopic.id == 'far-left-1') {
@@ -100,6 +138,9 @@ function startPart1A() {
 		} else if (checkedRadioSpeed.id == 'fast') {
 			speed = 2
 		}
+
+		const progressSpeeds = [2700, 2000, 1200]
+		updateProgressBar(progressSpeeds[speed])
 
 		const circleData = []
 		let oneIteration = []
@@ -244,24 +285,12 @@ function startPart1A() {
 			const progressBarSpeed = [2700, 2000, 1200]
 
 
-			function updateProgressBar() {
-				var index = 0;
-				progressIntervalId = setInterval(function () {
-					if (index < progressBarData.length) {
-						d3.select("#agent-progress-bar").select("circle:nth-child(" + (index + 1) + ")")
-							.attr("class", "circle green");
-						index++;
-					} else {
-						clearInterval(progressIntervalId);
-					}
-				}, progressBarSpeed[speed]);
-			}
+
 
 			let iter = 0
 
 			function updateAll() {
 				updateData(iter)
-				updateProgressBar()
 				setTimeout(update, iterationDuration[speed])
 				iter++
 				if (iter == iterations) {
@@ -312,6 +341,18 @@ function startPart1A() {
 		}
 
 		return array;
+	}
+
+	function resetProgressBar() {
+		progressIndex = 1
+		d3.select("#agent-progress-bar").selectAll("circle")
+			.attr("class", function (_d, i) {
+				if (i == 0) {
+					return "circle green"
+				} else {
+					return "circle"
+				}
+			})
 	}
 }
 
