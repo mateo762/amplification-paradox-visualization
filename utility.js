@@ -191,7 +191,8 @@ function startUtility() {
                     .attr('text-anchor', 'middle')
                     .attr('font-size', '18px')
                     .text(() => {
-                        if (index == 1 && orientation == 4) {
+                        if ((index == 1 && orientation == 4) || (index == 0 && orientation == 2)) {
+                            testValues[0] = 0
                             return "0.00"
                         } else {
                             return ((firstValue - 1) / scaleFactor * 100).toFixed(2)
@@ -219,7 +220,13 @@ function startUtility() {
                         .attr('y', groundPosition + 5) // Adjust the vertical position to center the text within the rectangle
                         .attr('text-anchor', 'middle')
                         .attr('font-size', '18px')
-                        .text(((firstValue - 1) / scaleFactor * 100).toFixed(2))
+                        .text(function () {
+                            if (firstValue == 0) {
+                                return '0.00'
+                            } else {
+                                return ((firstValue - 1) / scaleFactor * 100).toFixed(2)
+                            }
+                        })
                         .attr('fill', 'black')
                         .attr('opacity', 1)
                 });
@@ -230,7 +237,7 @@ function startUtility() {
                 testValuesArray.forEach((testValues, index) => {
                     let i = 0;
                     const bar = d3.select(`.utility-bar-${index}`)
-                    const firstValue = testValues[0]
+                    let firstValue = testValues[0]
 
                     const lastValue = testValues[testValues.length - 1]
 
@@ -267,7 +274,8 @@ function startUtility() {
                         if (i < testValues.length) {
                             const previousValue = i === 0 ? 0 : testValues[i - 1];
                             let currentValue = testValues[i];
-                            if ((index == 4 && orientation == 2) || (index == 1 && orientation == 4)) {
+                            if ((index == 4 && orientation == 2) || (index == 1 && orientation == 4) || (index == 0 && orientation == 2)) {
+                                firstValue = 0
                                 currentValue = 0
                                 percentageChange = 0
                             }
@@ -308,7 +316,7 @@ function startUtility() {
                                     .attr('fill', percentageChange > 0 ? 'green' : 'red') // Set the color based on the percentage change
                                     .attr('opacity', 0)
                                     .text(() => {
-                                        if (index == 1 && orientation == 4) {
+                                        if ((index == 1 && orientation == 4) || (index == 1 && orientation == 0)) {
                                             return '0.00%'
                                         } else {
                                             return (percentageChange > 0 ? '+' : '') + percentageChange.toFixed(2) + '%'
@@ -324,7 +332,7 @@ function startUtility() {
                                 d3.select(`.utility-text-value-${index}`)
                                     .attr('opacity', 0)
                                     .text(() => {
-                                        if (index == 1 && orientation == 4) {
+                                        if (index == 0 && orientation == 2) {
                                             return '0.00'
                                         } else {
                                             return originalLastValue.toFixed(2)
