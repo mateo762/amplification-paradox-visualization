@@ -92,6 +92,7 @@ h2 {
   flex-direction: column;
   width: 700px;
   margin: 0 auto;
+  padding-bottom: 200px;
 }
 
 .part {
@@ -122,9 +123,6 @@ h2 {
 
 
 
-.radio-margin {
-  margin-right: 10px;
-}
 
 .margin-top {
   margin-top: 5vh;
@@ -139,6 +137,12 @@ h2 {
 }
 
 /* Radio button container and labels */
+
+
+.radio-margin {
+  margin-right: 10px;
+}
+
 .radio-wrapper {
   display: flex;
   justify-content: space-between;
