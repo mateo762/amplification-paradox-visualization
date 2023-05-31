@@ -191,8 +191,9 @@ function startUtility() {
                     .attr('text-anchor', 'middle')
                     .attr('font-size', '18px')
                     .text(() => {
-                        if ((index == 1 && orientation == 4) || (index == 0 && orientation == 2)) {
+                        if ((index == 1 && orientation == 4) || (index == 0 && orientation == 2) || (index == 0 && orientation == 3)) {
                             testValues[0] = 0
+                            testValues[testValues.length-1] = 0
                             return "0.00"
                         } else {
                             return ((firstValue - 1) / scaleFactor * 100).toFixed(2)
@@ -274,7 +275,8 @@ function startUtility() {
                         if (i < testValues.length) {
                             const previousValue = i === 0 ? 0 : testValues[i - 1];
                             let currentValue = testValues[i];
-                            if ((index == 4 && orientation == 2) || (index == 1 && orientation == 4) || (index == 0 && orientation == 2)) {
+                            if ((index == 4 && orientation == 2) || (index == 1 && orientation == 4) || (index == 0 && orientation == 2) ||
+                                (index == 0 && orientation == 3) || (index == 0 && orientation == 4) || (index == 1 && orientation == 4)) {
                                 firstValue = 0
                                 currentValue = 0
                                 percentageChange = 0
@@ -332,7 +334,7 @@ function startUtility() {
                                 d3.select(`.utility-text-value-${index}`)
                                     .attr('opacity', 0)
                                     .text(() => {
-                                        if (index == 0 && orientation == 2) {
+                                        if ((index == 0 && orientation == 2) || (index == 1 && orientation == 4)) {
                                             return '0.00'
                                         } else {
                                             return originalLastValue.toFixed(2)
