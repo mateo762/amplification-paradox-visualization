@@ -128,7 +128,7 @@ h2 {
   margin-top: 5vh;
 }
 
-.margin-top-low{
+.margin-top-low {
   margin-top: 2vh;
 }
 
@@ -401,10 +401,23 @@ h2 {
 }
 
 .circle {
-    fill: #ccc;
+  fill: #ccc;
 }
 
 .green {
-    fill: #008000;
+  fill: #008000;
 }
 
+
+.recommender-outer-div {
+  display: flex;
+}
+
+.recommender-inner-div {
+  flex: 1;
+}
+
+.recommender-inner-div:nth-child(2) {
+  margin-top: 75px;
+  margin-right: 20px;
+}

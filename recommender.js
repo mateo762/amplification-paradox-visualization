@@ -5,12 +5,12 @@ function startRecommender() {
 
     // Data - initialize the user-item matrix data
     const numRows = 5;
-    const numCols = 10;
+    const numCols = 5;
     let data = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => Math.random()));
     let consumed = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
 
     // Dimensions
-    const cellSize = 70;
+    const cellSize = 50;
     const width = cellSize * numCols;
     const height = cellSize * numRows;
     const margin = { top: 80, right: 20, bottom: 20, left: 80 };
@@ -51,7 +51,7 @@ function startRecommender() {
             .attr("y", cellSize / 2)
             .attr("text-anchor", "middle")
             .attr("alignment-baseline", "middle")
-            .attr('font-size', '22px')
+            .attr('font-size', '18px')
             .attr("fill", "#333")
             .text(""); // Initialize with an empty string
 
@@ -97,6 +97,8 @@ function startRecommender() {
             const topItems = selectTopCosineSimilarityVideos(user, similarUsers);
 
             // Highlight the current user
+            d3.select('.recommender-step-4').style("color", "black")
+            d3.select('.recommender-step-1').style("color", "green")
             rowGroups.filter((_, i) => i === user) // Select the user row
                 .selectAll(".cell") // Select the cells within the user row
                 .attr("stroke-width", "4px") // Set stroke width directly
@@ -106,6 +108,8 @@ function startRecommender() {
 
             // Highlight top similar users
             setTimeout(() => {
+                d3.select('.recommender-step-1').style("color", "black")
+                d3.select('.recommender-step-2').style("color", "green")
                 rowGroups.filter((_, i) => similarUsers.includes(i))
                     .selectAll(".cell") // Select the cells within the group
                     .attr("stroke-width", "4px") // Set stroke width directly
@@ -116,6 +120,8 @@ function startRecommender() {
 
             // Highlight top items
             setTimeout(() => {
+                d3.select('.recommender-step-2').style("color", "black")
+                d3.select('.recommender-step-3').style("color", "green")
                 rowGroups
                     .filter((_, i) => i === user)
                     .selectAll(".cell")
@@ -163,6 +169,11 @@ function startRecommender() {
 
             // Update the specific cell
             setTimeout(() => {
+                d3.select('.recommender-step-3').style("color", "black")
+                d3.select('.recommender-step-4').style("color", "green")
+                setTimeout(() => {
+                    d3.selectAll('.recommender-step').style("color", "black")
+                }, 400)
                 rowGroups
                     .filter((_, i) => i === user)
                     .selectAll(".cell")
@@ -180,6 +191,7 @@ function startRecommender() {
         }
         if (interactionCounter >= numRows * interactionsPerUser) {
             setStartButtonDisabled(false)
+            d3.selectAll('.recommender-step').style("color", "black")
         }
 
     }
@@ -226,7 +238,6 @@ function startRecommender() {
         });
 
         itemSimilarities.sort((a, b) => b.similarity - a.similarity);
-        itemSimilarities.forEach((d) => console.log(d))
         return itemSimilarities.slice(0, topN);
     }
 
@@ -280,13 +291,14 @@ function startRecommender() {
 
     function reset() {
         interactionCounter = 0
-        data = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => Math.random()));
         consumed = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
+        shuffledUsers = shuffle(users.slice());
     }
 
     startButton.addEventListener('click', () => {
-        drawCells()
+        clearInterval(intervalId)
         reset()
+        drawCells()
         startAnimate()
         setStartButtonDisabled(true)
     })
