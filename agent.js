@@ -7,7 +7,7 @@ function startPart1A() {
 	// Define the number of boxes
 	const numBoxes = 5;
 	const boxWidth = 90
-	const boxHeight = 100;
+	const boxHeight = 110;
 	const boxOpacity = 0.3
 	// Define the x-coordinate of the first box
 	const boxX = 0;

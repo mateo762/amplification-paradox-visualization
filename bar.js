@@ -3,8 +3,8 @@ function startPart1B() {
 
     d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
         // Define the dimensions of the chart
-        const width_2 = 500;
-        const height_2 = 300;
+        const width_2 = 600;
+        const height_2 = 200;
         const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
         // Colors array
