@@ -4,13 +4,13 @@ function startRecommender() {
     const stopButton = document.querySelector('.stop-button-recommender')
 
     // Data - initialize the user-item matrix data
-    const numRows = 5;
-    const numCols = 5;
+    const numRows = 7;
+    const numCols = 7;
     let data = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => Math.random()));
     let consumed = Array.from({ length: numRows }, () => Array.from({ length: numCols }, () => 0));
 
     // Dimensions
-    const cellSize = 50;
+    const cellSize = 55;
     const width = cellSize * numCols;
     const height = cellSize * numRows;
     const margin = { top: 80, right: 20, bottom: 20, left: 80 };
