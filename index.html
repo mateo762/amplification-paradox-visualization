@@ -45,17 +45,19 @@
           proportionally to the utility scores each item has. As the visualization progresses, you'll see how the
           recommender system leverages the preferences of similar users to identify the most relevant items for the
           current user.</p>
-          <div class="recommender-outer-div">
-            <div class="recommender-inner-div">
-              <svg class="recommender-matrix"></svg>
-            </div>
-            <div class="recommender-inner-div">
-              <p class="text-block recommender-step recommender-step-1"><b>1</b>: Select a random user</p>
-              <p class="text-block recommender-step recommender-step-2"><b>2</b>: Select the 2 most similar users</p>
-              <p class="text-block recommender-step recommender-step-3"><b>3</b>: Get the 3 videos with the highest score</p>
-              <p class="text-block recommender-step recommender-step-4"><b>4</b>: Choose one of the 3 videos according to their scores</p>
-            </div>
+        <div class="recommender-outer-div">
+          <div class="recommender-inner-div">
+            <svg class="recommender-matrix"></svg>
           </div>
+          <div class="recommender-inner-div">
+            <p class="text-block recommender-step recommender-step-1"><b>1</b>: Select a random user</p>
+            <p class="text-block recommender-step recommender-step-2"><b>2</b>: Select the 2 most similar users</p>
+            <p class="text-block recommender-step recommender-step-3"><b>3</b>: Get the 3 videos with the highest score
+            </p>
+            <p class="text-block recommender-step recommender-step-4"><b>4</b>: Choose one of the 3 videos according to
+              their scores</p>
+          </div>
+        </div>
         <div class="button-container">
           <button class="start-button start-button-recommender margin-bottom">Start animation</button>
           <button class="stop-button stop-button-recommender">Stop</button>
@@ -227,6 +229,7 @@
           <button class="start-button start-button-utility">Animate</button>
         </div>
       </div>
+
     </div>
   </div>
   </div>
@@ -236,6 +239,23 @@
   <script src="bar.js"></script>
   <script src="random.js"></script>
   <script src="utility.js"></script>
+  <div class="big-container big-container-footer">
+    <div class="container container-footer">
+      <footer class="footer">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="width: 33%;">
+            <img src="./pictures/dlab.svg" style="width: 100%;" alt="DLAB logo">
+          </div>
+          <div style="width: 50%;">
+            <p class="text-block">Developed by Mateo Echeverry Hoyos at the Data Science Lab (DLAB) at EPFL. Supervised
+              by
+              Manoel Horta
+              Ribeiro.</p>
+          </div>
+        </div>
+    </div>
+    </footer>
+  </div>
 </body>
 
 </html>

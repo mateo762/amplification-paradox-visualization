@@ -85,6 +85,15 @@ h2 {
   border-radius: 4px;
 }
 
+.big-container-footer {
+  background-color: #D8D8D8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  /* or you can use a specific height, for example 500px */
+}
+
 .container {
   display: flex;
   justify-content: center;
@@ -92,7 +101,13 @@ h2 {
   flex-direction: column;
   width: 700px;
   margin: 0 auto;
-  padding-bottom: 200px;
+  padding-bottom: 100px;
+}
+
+.container-footer {
+  width: 700px;
+  margin: 0 auto;
+  margin-top: 100px
 }
 
 .part {
@@ -105,7 +120,7 @@ h2 {
 
 .part-2,
 .part-3 {
-  margin-top: 200px
+  margin-top: 200px;
 }
 
 .compare-animation,
