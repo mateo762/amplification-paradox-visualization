@@ -18,8 +18,46 @@ function startPart1A() {
 	const circlesSeparation = 30
 	const circleRadius = 10
 
+
+	// Legend items array
+	const legendItems = [
+		{ color: "#1919e6", text: "Far Left" },
+		{ color: "#6060b1", text: "Left" },
+		{ color: "#808080", text: "Center" },
+		{ color: "#b34d4d", text: "Right" },
+		{ color: "#e61919", text: "Far Right" },
+	];
+
+	// Create a group for the legend
+	const legendGroup = d3.select("#legend").append("g")
+		.attr("class", "legend-group");
+
+	// Create legend items
+	const legend = legendGroup.selectAll(".legend")
+		.data(legendItems)
+		.enter()
+		.append("g")
+		.attr("class", "legend")
+		.attr("transform", (d, i) => `translate(${i * 120}, 0)`);  // Horizontal placement
+
+	// Draw legend colored circles
+	legend.append("circle")
+		.attr("class", "legend-icon")
+		.attr("cx", 10)
+		.attr("cy", 10)
+		.attr("r", 10)
+		.style("fill", d => d.color);
+
+	// Draw legend text
+	legend.append("text")
+		.attr("class", "text-block legend-text")
+		.attr("x", 30)  // Space legend text after the circle
+		.attr("y", 15)
+		.text(d => d.text);
+
+
+
 	// Create a group for the boxes
-	console.log("heyJ")
 	const boxGroup = d3.select("#animation").append("g")
 		.attr("class", "box-group")
 
@@ -184,7 +222,6 @@ function startPart1A() {
 
 		function startAnimation() {
 
-			console.log(circleData)
 			d3.selectAll(".circles-group").remove()
 
 			const iterationDuration = [1000, 700, 500]
