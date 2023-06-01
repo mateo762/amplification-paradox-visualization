@@ -151,6 +151,10 @@ h2 {
   margin-bottom: 10vh;
 }
 
+.margin-bottom-low {
+  margin-bottom: 3vh;
+}
+
 .start-button {
   margin-top: 20px;
 }
