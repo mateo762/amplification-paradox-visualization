@@ -28,12 +28,28 @@ function startPart1B() {
             .range([height_2, 0]);
 
         // Add the x-axis to the chart
-        svg.append("g")
+        // svg.append("g")
+        //     .attr("transform", `translate(0, ${height_2})`)
+        //     .call(d3.axisBottom(x))
+        //     .selectAll("text")
+        //     .style("font-size", "14px") // Increase the font size of the x-axis labels
+        //     .attr("fill", "#333");
+
+        // Add the x-axis to the chart
+        let xAxisGroup = svg.append("g")
             .attr("transform", `translate(0, ${height_2})`)
-            .call(d3.axisBottom(x))
-            .selectAll("text")
-            .style("font-size", "14px") // Increase the font size of the x-axis labels
-            .attr("fill", "#333");
+            .call(d3.axisBottom(x));
+
+        xAxisGroup.selectAll("text")
+            .style("display", "none");  // Hide the original x-axis text labels
+
+        let xAxisTicks = xAxisGroup.selectAll(".tick");
+        xAxisTicks.append("circle")
+            .attr("r", 10)
+            .attr("cy", 20)  // Adjust this to position the circles correctly
+            .attr("fill", function (d, i) {
+                return colors[i];
+            });
 
         // Add the y-axis to the chart
         svg.append("g")
