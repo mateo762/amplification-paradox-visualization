@@ -391,8 +391,10 @@ function startUtility() {
         startButton.disabled = isDisabled
         if (isDisabled) {
             startButton.classList.add("disabled")
+			document.querySelectorAll('input[name="position-utility"]').forEach((radioBox) => radioBox.disabled = true);
         } else {
             startButton.classList.remove("disabled")
+			document.querySelectorAll('input[name="position-utility"]').forEach((radioBox) => radioBox.disabled = false);
         }
     }
 

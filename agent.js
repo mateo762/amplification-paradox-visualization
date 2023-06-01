@@ -357,8 +357,16 @@ function startPart1A() {
 		startButton.disabled = isDisabled
 		if (isDisabled) {
 			startButton.classList.add("disabled")
+			// disable radio buttons and checkbox
+			document.querySelectorAll('input[name="radio-topic"]').forEach((radioBox) => radioBox.disabled = true);
+			document.querySelectorAll('input[name="radio-speed"]').forEach((radioBox) => radioBox.disabled = true);
+			document.getElementById("checkbox-mode").disabled = true;
 		} else {
 			startButton.classList.remove("disabled")
+			// enable radio buttons and checkbox
+			document.querySelectorAll('input[name="radio-topic"]').forEach((radioBox) => radioBox.disabled = false);
+			document.querySelectorAll('input[name="radio-speed"]').forEach((radioBox) => radioBox.disabled = false);
+			document.getElementById("checkbox-mode").disabled = false;
 		}
 	}
 

@@ -306,8 +306,10 @@ function startRandom() {
         startButton.disabled = isDisabled
         if (isDisabled) {
             startButton.classList.add("disabled")
+			document.querySelectorAll('input[name="position-random"]').forEach((radioBox) => radioBox.disabled = true);
         } else {
             startButton.classList.remove("disabled")
+			document.querySelectorAll('input[name="position-random"]').forEach((radioBox) => radioBox.disabled = false);
         }
     }
 

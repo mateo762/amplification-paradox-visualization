@@ -238,6 +238,32 @@ h2 {
   border-color: #ffffff;
 }
 
+/* Style the label when the radio button is disabled */
+.radio-container input[type="radio"]:disabled+label {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+  color: #adb5bd;
+  cursor: not-allowed;
+}
+
+/* Style the custom radio button indicator when the radio button is disabled */
+.radio-container input[type="radio"]:disabled+label span {
+  border-color: #adb5bd;
+}
+
+/* Style the label when the radio button is disabled but checked */
+.radio-container input[type="radio"]:disabled:checked+label {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+}
+
+/* Style the custom radio button indicator when the radio button is disabled but checked */
+.radio-container input[type="radio"]:disabled:checked+label span {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
 /* Start and Stop Button*/
 .start-button,
 .stop-button {
