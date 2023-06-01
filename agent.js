@@ -256,6 +256,12 @@ function startPart1A() {
 				.attr("class", "circles-group");
 
 			function updateData(iteration) {
+				setTimeout(() => {
+					d3.select('.agent-step-1').style("color", "black")
+					d3.select('.agent-step-2').style("color", "black")
+				}, betweenIterationDuration[speed] - 200)
+				d3.select('.agent-step-2').style("color", "black")
+				d3.select('.agent-step-1').style("color", "green")
 				circleGroup.selectAll(".circle")
 					.data(circleData[iteration].circles)
 					.enter()
@@ -286,6 +292,8 @@ function startPart1A() {
 			function update() {
 
 				setTimeout(() => {
+					d3.select('.agent-step-1').style("color", "black")
+					d3.select('.agent-step-2').style("color", "green")
 					d3.select("#selected")
 						.transition()
 						.duration(circlesRemoveDuration[speed])

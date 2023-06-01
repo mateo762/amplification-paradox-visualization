@@ -50,9 +50,9 @@
             <svg class="recommender-matrix"></svg>
           </div>
           <div class="recommender-inner-div">
-            <p class="text-block recommender-step recommender-step-1"><b>1</b>: Select a random user</p>
-            <p class="text-block recommender-step recommender-step-2"><b>2</b>: Select the 2 most similar users</p>
-            <p class="text-block recommender-step recommender-step-3"><b>3</b>: Get the 3 videos with the highest score
+            <p class="text-block recommender-step recommender-step-1"><b>1.</b> Select a random user</p>
+            <p class="text-block recommender-step recommender-step-2"><b>2.</b> Select the 2 most similar users</p>
+            <p class="text-block recommender-step recommender-step-3"><b>3.</b> Get the 3 videos with the highest score
             </p>
             <p class="text-block recommender-step recommender-step-4"><b>4</b>: Choose one of the 3 videos according to
               their scores</p>
@@ -75,7 +75,8 @@
           of being selected, whereas when set to utility, categories have varying chances of being selected depending on
           the user's preferences. You can see these probabilities in the bar chart below. You can also change the
           animation speed to your liking.</p>
-          <p class="text-block">Before we begin, let's define what what each color stands for on our political spectrum:</p>
+        <p class="text-block">Before we begin, let's define what what each color stands for on our political spectrum:
+        </p>
         <div class="margin-top-low margin-bottom">
           <svg id="legend" width="585" height="80"></svg>
         </div>
@@ -112,8 +113,14 @@
         <div class="margin-top-low">
           <svg id="agent-progress-bar" width="700" height="100"></svg>
         </div>
-        <div class="margin-top-low">
-          <svg id="bar"></svg>
+        <div class="recommender-outer-div margin-top-low margin-bottom">
+          <div class="bar-div agent-inner-div">
+            <svg id="bar"></svg>
+          </div>
+          <div class="agent-steps agent-inner-div">
+            <p class="text-block agent-step agent-step-1"><b>1.</b> Display all recommendations</p>
+            <p class="text-block agent-step agent-step-2"><b>2.</b> Choose one video according to the utilities</p>
+          </div>
         </div>
         <div class="button-container">
           <button class="start-button start-button-agent">Start animation</button>

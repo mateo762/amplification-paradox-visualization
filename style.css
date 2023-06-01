@@ -461,3 +461,18 @@ h2 {
 .recommender-inner-div:nth-child(2) {
   margin-top: 105px;
 }
+
+.bar-div{
+  align-self: self-start;
+}
+
+
+
+.agent-inner-div {
+  flex: 1;
+}
+
+.agent-inner-div:nth-child(2) {
+  margin-top: 60px;
+  margin-left: 30px;
+}

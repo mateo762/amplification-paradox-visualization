@@ -3,9 +3,9 @@ function startPart1B() {
 
     d3.csv("https://mateo762.github.io/data/utility.csv.txt").then((data) => {
         // Define the dimensions of the chart
-        const width_2 = 600;
+        const width_2 = 300;
         const height_2 = 200;
-        const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+        const margin = { top: 30, right: 20, bottom: 30, left: 40 };
 
         // Colors array
         const colors = ['#1919e6', '#6060b1', '#808080', '#b34d4d', '#e61919'];
@@ -16,6 +16,15 @@ function startPart1B() {
             .attr("height", height_2 + margin.top + margin.bottom)
             .append("g")
             .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+        // Add title to the chart
+        svg.append("text")
+            .attr("x", width_2 / 2)
+            .attr("y", 0 - (margin.top / 2))
+            .attr("text-anchor", "middle")
+            .style("font-size", "20px")
+            .style("text-decoration", "bold")
+            .text("Topic Utilities");
 
         // Define the x and y scales
         const x = d3.scaleBand()
